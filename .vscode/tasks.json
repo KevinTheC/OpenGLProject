@@ -1,0 +1,34 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Run My Bash Script",
+            "command": "C:\\msys64\\ucrt64.exe",
+            "args": [
+                "C:\\Users\\toonl\\gitMaster\\vscode\\vsc222\\proj1\\.vscode\\script.sh"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Run executable",
+            "command": "C:/Users/toonl/gitMaster/vscode/vsc222/proj1/output.exe",
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent"
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
