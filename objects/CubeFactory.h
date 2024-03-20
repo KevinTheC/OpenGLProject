@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include "Object.h"
+#include "objects/Object.h"
 #define colors color[0],color[1],color[2],
 class CubeFactory
 {

@@ -1,6 +1,6 @@
-#include "CubeFactory.h"
-#include "DragListener.h"
-#include "MouseButtonListener.h"
+#include "objects/CubeFactory.h"
+#include "keybinds/DragListener.h"
+#include "keybinds/MouseButtonListener.h"
 #include "includes.h"
 #define red {1.0f, 0.0f, 0.0f}
 #define green {0.0f, 1.0f, 0.0f}

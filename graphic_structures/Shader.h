@@ -7,8 +7,9 @@
 #include <sstream>
 #include <iostream>
 #include <cerrno>
-#include "vector"
-#include "array"
+#include <vector>
+#include <array>
+#include "log/logger.h"
 std::string get_file_contents(const char* filename);
 
 class Shader

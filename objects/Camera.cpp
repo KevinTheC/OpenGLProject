@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "objects/Camera.h"
 std::shared_ptr<Camera> Camera::camera;
 Camera::Camera()
 {

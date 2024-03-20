@@ -2,8 +2,8 @@
 #ifndef VBO_CLASS_H
 #define VBO_CLASS_H
 #include <GL/glew.h>
-#include "vector"
-#include "memory"
+#include <vector>
+#include <memory>
 class VBO
 {
 public:

@@ -1,4 +1,4 @@
-#include "VAO.h"
+#include "graphic_structures/VAO.h"
 VAO::VAO() {
 	attribs = 0;
 	total = 0;

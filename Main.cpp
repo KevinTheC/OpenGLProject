@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include "log/logger.h"
 #include "OpenGLIncludes.h"
-#include "Camera.h"
-#include "InputController.h"
-#include "CubeFactory.h"
+#include "objects/Camera.h"
+#include "keybinds/InputController.h"
+#include "objects/CubeFactory.h"
 #define gray .5f, .5f, .5f,
 
 int height = 900;
@@ -16,7 +17,10 @@ int main()
 {
     GLFWwindow* window;
     if (!glfwInit())
+    {
+        Logger::log << "penis";
         return -1;
+    }
     window = glfwCreateWindow(width, height, "Model", NULL, NULL);
     if (!window)
     {
@@ -32,7 +36,7 @@ int main()
     
     //vertices for triangle
     //Shader shaderprogram("default.vert","default.frag");
-    std::shared_ptr<Shader> sh(new Shader("color.vert","color.frag"));
+    std::shared_ptr<Shader> sh(new Shader("resources/shaders/color.vert","resources/shaders/color.frag"));
     sh->activate();
 
     Object o = Object(sh, std::shared_ptr<std::vector<GLfloat>>(new std::vector<GLfloat>({

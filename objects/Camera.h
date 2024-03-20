@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <iostream>
 #include "OpenGLIncludes.h"
-#include "array"
-#include "cmath"
-#include "Object.h"
-#include "CubeFactory.h"
-#include "listeners.h"
+#include <array>
+#include <cmath>
+#include "objects/Object.h"
+#include "objects/CubeFactory.h"
+#include "keybinds/listeners.h"
 #define PI 3.1416f
 #define screensize 3.0971f
 #define MAX_FLOAT 3.4028235E38f

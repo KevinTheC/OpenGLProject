@@ -3,7 +3,7 @@
 #define EBO_CLASS_H
 #include <GL/glew.h>
 #include <memory>
-#include "vector"
+#include <vector>
 #include "Shader.h"
 class EBO
 {

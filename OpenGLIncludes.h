@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "VAO.h"
-#include "EBO.h"
-#include "Shader.h"
-#include "Renderable.h"
+#include "graphic_structures/VAO.h"
+#include "graphic_structures/EBO.h"
+#include "graphic_structures/Shader.h"
+#include "objects/Renderable.h"

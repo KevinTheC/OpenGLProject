@@ -1,4 +1,4 @@
-#include "Object.h"
+#include "objects/Object.h"
 Object::Object(std::shared_ptr<Shader> sp, std::shared_ptr<std::vector<GLfloat>> verts, std::shared_ptr<std::vector<GLuint>> inds)
 {
 	this->sp = sp;

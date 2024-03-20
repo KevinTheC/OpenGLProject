@@ -1,7 +1,7 @@
 #pragma once
-#include "stdlib.h"
-#include "set"
-#include "iostream"
+#include <stdlib.h>
+#include <set>
+#include <iostream>
 class UniqueID {
 private:
 	std::set<long int> IDs;
