@@ -85,7 +85,7 @@ void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int m
         glm::vec3 directionx = panDirection(*size-x,0);
         glm::vec3 directiony = panDirection(0,*(size+1)-y);
         //TODO determine the point at which is clicked
-        notify(glm::translate());
+        //notify(glm::translate());
         
     }
 }
