@@ -15,6 +15,7 @@ int width = 800;
 using namespace glm;
 int main()
 {
+    
     Logger::initLogger();
     GLFWwindow* window;
     if (!glfwInit())

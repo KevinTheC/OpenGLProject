@@ -60,5 +60,22 @@
         "format": "cpp",
         "span": "cpp",
         "variant": "cpp"
+    },
+    "editor.semanticTokenColorCustomizations": {
+        "rules": {
+            "macro": {
+                "foreground": "#b1a1bf",
+                "fontStyle": "bold"
+            },
+            "parameter":{
+                "foreground": "#b2b3ab"
+            }
+        }
+    },
+    "workbench.colorCustomizations": {
+
+        "editorBracketHighlight.foreground1": "#b2b3ab",
+        "editorBracketHighlight.foreground2": "#b2b3ab",
+        "editorBracketHighlight.unexpectedBracket.foreground": "#b2b3ab",
     }
 }
