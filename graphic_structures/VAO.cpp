@@ -7,7 +7,7 @@ VAO::VAO(std::shared_ptr<Shader> sh) {
 	glGenVertexArrays(1, &ID);
 	this->bind();
 }
-const VAO& VAO::getVAO(Shader& sh)
+const std::reference_wrapper<VAO> VAO::getVAO(Shader& sh)
 {
 	if (vaomap.find(sh.ID)==vaomap.end())
 	{

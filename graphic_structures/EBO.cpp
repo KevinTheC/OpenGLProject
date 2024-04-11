@@ -22,5 +22,5 @@ void EBO::erase()
 void EBO::draw(Shader* sh)
 {
 	sh->activate();
-	glDrawElements(GL_TRIANGLES, indices->size(), GL_UNSIGNED_INT, (void*)(indices->data()));
+	glDrawElements(GL_QUADS, indices->size(), GL_UNSIGNED_INT, (void*)(indices->data()));
 }

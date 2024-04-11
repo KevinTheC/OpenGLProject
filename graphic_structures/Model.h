@@ -7,23 +7,26 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "graphic_structures/VAO.h"
-#include "graphic_structures/EBO.h"
-#include "graphic_structures/Shader.h"
+#include "VAO.h"
+#include "EBO.h"
+#include "Shader.h"
 #include "objects/Renderable.h"
 #include <array>
 #include <stb-master/stb_image.h>
 class Model
 {
 private:
-	VBO vbo;
-	EBO ebo;
-	VAO vao;
+	std::reference_wrapper<VBO> vbo;
+	std::reference_wrapper<EBO> ebo;
+	std::reference_wrapper<VAO> vao;
 	Shader shader;
 	glm::mat4 model;
 	void(*drawFunction)() = []() {};
 public:
-	Model(std::string path, Shader sh);
+	Model(std::reference_wrapper<VBO>,
+	std::reference_wrapper<EBO>, 
+	std::reference_wrapper<VAO>,
+	Shader);
 
 	const glm::mat4& getModel();
     const VBO& getVBO();

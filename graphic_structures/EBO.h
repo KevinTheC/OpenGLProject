@@ -1,6 +1,4 @@
 #pragma once
-#ifndef EBO_CLASS_H
-#define EBO_CLASS_H
 #include <GL/glew.h>
 #include <memory>
 #include <vector>
@@ -17,5 +15,5 @@ public:
 private:
 	std::shared_ptr<std::vector<GLuint>> indices;
 };
-#endif
+
 

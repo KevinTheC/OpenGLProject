@@ -2,9 +2,3 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "graphic_structures/VAO.h"
-#include "graphic_structures/EBO.h"
-#include "graphic_structures/Shader.h"
-#include "objects/Renderable.h"

@@ -1,11 +1,9 @@
-#include "graphic_structures/Model.h"
-Model::Model(std::string path, Shader sh)
-{
-   model = glm::mat4(1.0f);
-   ebo = NULL;
-   vbo = NULL;
-   vao = VAO::getVAO(sh);
-}
+#include "Model.h"
+Model::Model(std::reference_wrapper<VBO> vbparam,
+    std::reference_wrapper<EBO> ebparam, 
+	std::reference_wrapper<VAO> vaparam,
+    Shader shparam) : 
+    vbo{vbparam}, ebo{ebparam}, vao{vaparam}, shader{shparam} {};
 const glm::mat4& Model::getModel()
 {
     return model;
@@ -31,11 +29,11 @@ void Model::setContext(void(*func)())
 }
 void Model::draw()
 {
-    vbo.bind();
+    vbo.get().bind();
     drawFunction();
 	int modelLoc = glGetUniformLocation(shader.ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	vao.bind();
-	ebo.draw(&shader);
-	vao.bind();
+	vao.get().bind();
+	ebo.get().draw(&shader);
+	vao.get().bind();
 }

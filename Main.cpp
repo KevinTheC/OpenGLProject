@@ -8,6 +8,10 @@
 #include "objects/Camera.h"
 #include "keybinds/InputController.h"
 #include "objects/CubeFactory.h"
+
+#define BUILD_TEST
+
+#ifndef BUILD_TEST
 #define gray .5f, .5f, .5f,
 int height = 900;
 int width = 800;
@@ -110,3 +114,10 @@ int main()
     glfwTerminate();
     return 0;
 }
+#endif
+#ifdef BUILD_TEST
+int main()
+{
+
+}
+#endif
