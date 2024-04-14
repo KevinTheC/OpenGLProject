@@ -10,7 +10,6 @@
 #include "VAO.h"
 #include "EBO.h"
 #include "Shader.h"
-#include "objects/Renderable.h"
 #include <array>
 #include <stb-master/stb_image.h>
 class Mesh

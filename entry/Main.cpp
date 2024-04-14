@@ -7,7 +7,7 @@
 #include "OpenGLIncludes.h"
 #include "objects/Camera.h"
 #include "keybinds/InputController.h"
-#include "graphic_structures/OBJParser.h"
+#include "graphic_structures/mesh_parsing/MeshParser.h"
 #include "graphic_structures/Mesh.h"
 //#define BUILD_TEST
 
@@ -15,6 +15,8 @@
 #define gray .5f, .5f, .5f,
 int height = 900;
 int width = 800;
+
+std::vector<std::pair<Mesh*,bool>> drawables;
 
 using namespace glm;
 int main()
@@ -89,7 +91,9 @@ int main()
         /* Render here */
         //glBindTexture(GL_TEXTURE_2D, texture);
         //o.transform(glm::vec3(0.0f,0.0f,0.001f));
-        Renderable::drawAll();
+        for (const auto& ptr : drawables)
+            if (ptr.second)
+                ptr.first->draw();
         
         glfwSwapBuffers(window);
         glfwPollEvents();
