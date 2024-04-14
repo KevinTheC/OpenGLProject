@@ -7,13 +7,13 @@ class EBO
 {
 public:
 	GLuint ID;
-	EBO(std::shared_ptr<std::vector<GLuint>> vec);
-	void draw(Shader* sh);
+	EBO(std::vector<GLuint>* vec);
+	void draw(std::shared_ptr<Shader> sh);
 	void bind();
 	void unbind();
 	void erase();
 private:
-	std::shared_ptr<std::vector<GLuint>> indices;
+	std::vector<GLuint>* indices;
 };
 
 

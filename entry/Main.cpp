@@ -7,9 +7,9 @@
 #include "OpenGLIncludes.h"
 #include "objects/Camera.h"
 #include "keybinds/InputController.h"
-#include "objects/CubeFactory.h"
-
-#define BUILD_TEST
+#include "graphic_structures/OBJParser.h"
+#include "graphic_structures/Mesh.h"
+//#define BUILD_TEST
 
 #ifndef BUILD_TEST
 #define gray .5f, .5f, .5f,
@@ -19,18 +19,17 @@ int width = 800;
 using namespace glm;
 int main()
 {
-    
     Logger::initLogger();
     GLFWwindow* window;
     if (!glfwInit())
     {
-        Logger::log << "GLFW failed to initialize." << std::endl;
+        LOG_ALERT("GLFW failed to initialize.");
         return -1;
     }
     window = glfwCreateWindow(width, height, "Model", NULL, NULL);
     if (!window)
     {
-        Logger::log << "GLFW failed to create a window." << std::endl;
+        LOG_ALERT("GLFW failed to create a window.");
         glfwTerminate();
         return -1;
     }
@@ -47,22 +46,8 @@ int main()
     std::shared_ptr<Shader> sh(new Shader("./resources/shaders/color.vert","./resources/shaders/color.frag"));
     sh->activate();
 
-    Object o = Object(sh, std::shared_ptr<std::vector<GLfloat>>(new std::vector<GLfloat>({
-        -.2f, 0.4f, -.2f,        gray
-        -.2f,  0.4f, .2f,      gray
-        .2f,  0.4f, .2f,       gray
-        .2f, 0.4f, -.2f, 		gray
-        0.0f, 0.8f, 0.0f,		gray
-        })), 
-        std::shared_ptr<std::vector<GLuint>>(new std::vector<GLuint>({
-        0U, 1U, 2U,
-        0U, 2U, 3U,
-        0U, 1U, 4U,
-        1U, 2U, 4U,
-        2U, 3U, 4U,
-        3U, 0U, 4U,
-            })));
-    Camera::instance()->setFocus(o.getModel());
+    Mesh* mesh = OBJParser::parse("./resources/meshes/untitled.obj",sh);
+    Camera::instance()->setFocus(mesh->getModel());
     Camera::instance()->linkShader(sh.get());
     //textures
     /*int widthImg, heightImg, numColCh;
@@ -85,7 +70,7 @@ int main()
     glUniform1i(tex0Uni, 0);
     */
     //textures
-    o.setContext([](){glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);});
+    mesh->setContext([](){glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);});
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
     
     glEnable(GL_DEPTH_TEST);
@@ -118,6 +103,33 @@ int main()
 #ifdef BUILD_TEST
 int main()
 {
+    Logger::initLogger();
 
+    GLFWwindow* window;
+    if (!glfwInit())
+    {
+        Logger::log << "GLFW failed to initialize." << std::endl;
+        return -1;
+    }
+    window = glfwCreateWindow(70, 70, "Model", NULL, NULL);
+    if (!window)
+    {
+        Logger::log << "GLFW failed to create a window." << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    if (glewInit() != GLEW_OK) {
+        Logger::log << "glew failed to initialize." << std::endl;
+        return -1;
+    }
+    glViewport(0, 0, 70, 70);
+
+
+    Shader* sh = new Shader("./resources/shaders/color.vert","./resources/shaders/color.frag");
+    std::string str;
+    auto ty = std::ifstream("./resources/meshes/untitled.obj");
+    std::getline(ty,str);
+    OBJParser::parse("./resources/meshes/untitled.obj",sh);
 }
 #endif

@@ -2,19 +2,39 @@
 #ifndef VBO_CLASS_H
 #define VBO_CLASS_H
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 #include <vector>
 #include <memory>
+typedef struct Vertex {
+	glm::vec3 position;
+	glm::vec2 UV;
+	bool operator==(const Vertex& other) const
+	{
+		return position==other.position&&UV==other.UV;
+	};
+} Vertex;
+template<>
+struct std::hash<Vertex>{
+	std::size_t operator()(const Vertex& v) const noexcept
+    {
+        return std::hash<float>{}(v.position[0]) ^ 
+		(std::hash<float>{}(v.position[1]) << 1) ^
+		(std::hash<float>{}(v.position[2]) << 2) ^
+		(std::hash<float>{}(v.UV[0]) << 3) ^
+		(std::hash<float>{}(v.UV[1]) << 4);
+    }
+};
 class VBO
 {
 public:
 	GLuint ID;
-	VBO(std::shared_ptr<std::vector<GLfloat>>);
+	VBO(std::vector<Vertex>*);
 	void bind();
 	void unbind();
 	void erase();
 	void update();
 private:
-	std::shared_ptr<std::vector<GLfloat>> vertices;
+	std::vector<Vertex>* vertices;
 };
 #endif
 

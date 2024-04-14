@@ -5,9 +5,8 @@
 #include <iostream>
 #include "OpenGLIncludes.h"
 #include <array>
+#include <graphic_structures/Shader.h>
 #include <cmath>
-#include "objects/Object.h"
-#include "objects/CubeFactory.h"
 #include "keybinds/listeners.h"
 #define PI 3.1416f
 #define screensize 3.0971f
@@ -49,7 +48,6 @@ private:
 	glm::vec3 viewpoint;
 	glm::vec2 toXY(glm::mat4 model, glm::vec4 point);
 	static float distance(std::pair<float,float>&, std::pair<float,float>);
-	Object::VertIterator getClosestTo(std::pair<float,float> pos,Object& o);
 	static std::shared_ptr<Camera> camera;
 
 	void notify(glm::mat4 location);

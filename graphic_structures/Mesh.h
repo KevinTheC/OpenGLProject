@@ -13,25 +13,25 @@
 #include "objects/Renderable.h"
 #include <array>
 #include <stb-master/stb_image.h>
-class Model
+class Mesh
 {
 private:
-	std::reference_wrapper<VBO> vbo;
-	std::reference_wrapper<EBO> ebo;
+	VBO* vbo;
+	EBO* ebo;
 	std::reference_wrapper<VAO> vao;
-	Shader shader;
+	std::shared_ptr<Shader> shader;
 	glm::mat4 model;
 	void(*drawFunction)() = []() {};
 public:
-	Model(std::reference_wrapper<VBO>,
-	std::reference_wrapper<EBO>, 
+	Mesh(VBO*,
+	EBO*, 
 	std::reference_wrapper<VAO>,
-	Shader);
+	std::shared_ptr<Shader>);
 
 	const glm::mat4& getModel();
-    const VBO& getVBO();
-    const EBO& getEBO();
-	const Shader& getShader();
+    const VBO* getVBO();
+    const EBO* getEBO();
+	const std::shared_ptr<Shader> getShader();
 
 	void transform(glm::mat4 transform);
 

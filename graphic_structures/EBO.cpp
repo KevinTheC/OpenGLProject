@@ -1,5 +1,5 @@
 #include "EBO.h"
-EBO::EBO(std::shared_ptr<std::vector<GLuint>> vec)
+EBO::EBO(std::vector<GLuint>* vec)
 {
 	indices = vec;
 	glGenBuffers(1, &ID);
@@ -19,7 +19,7 @@ void EBO::erase()
 {
 	glDeleteBuffers(1, &ID);
 }
-void EBO::draw(Shader* sh)
+void EBO::draw(std::shared_ptr<Shader> sh)
 {
 	sh->activate();
 	glDrawElements(GL_QUADS, indices->size(), GL_UNSIGNED_INT, (void*)(indices->data()));

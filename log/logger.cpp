@@ -41,7 +41,11 @@ void Logger::initLogger()
             std::string relative = entry.path().string();
             size_t idx = relative.find("log-");
             if (relative.find("log-")!=std::string::npos)
-            highest = stoi(relative.substr(idx+4,relative.find(".")-(idx+4)));
+            {
+                int temp = stoi(relative.substr(idx+4,relative.find(".")-(idx+4)));
+                if (temp > highest)
+                highest = temp;
+            }
         }
 	    output = std::ofstream(std::string("./logs/log-").append(std::to_string(highest+1)).append(".log"),std::ios::out);
         output.flush();

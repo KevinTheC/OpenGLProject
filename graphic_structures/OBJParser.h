@@ -9,15 +9,16 @@
 #include "EBO.h"
 #include "VBO.h"
 #include "VAO.h"
-#include "Model.h"
+#include "Mesh.h"
 typedef struct BufferPointers{
     std::reference_wrapper<VBO> vbo;
     std::reference_wrapper<EBO> ebo;
 } BufferPointers;
 class OBJParser{
 public:
-    static Model parse(std::string path, Shader sh);
+    static Mesh* parse(std::string path, std::shared_ptr<Shader> sh);
 private:
-    void getVertexes(std::ifstream& stream, std::vector<glm::vec3>& prephase);
-    void getUVs(std::ifstream& stream, std::vector<glm::vec2>& prephase);
+    static void getVertexes(std::ifstream stream, std::vector<glm::vec3>& prephase, std::unordered_map<int_fast16_t,glm::vec3>& premap);
+    static void getUVs(std::ifstream stream, std::vector<glm::vec2>& prephase, std::unordered_map<int_fast16_t,glm::vec2>& premap);
+    static std::vector<std::string> splitString(std::string, char);
 };
