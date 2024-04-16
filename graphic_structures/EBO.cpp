@@ -19,12 +19,11 @@ void EBO::erase()
 {
 	glDeleteBuffers(1, &ID);
 }
-void EBO::draw(std::shared_ptr<Shader> sh)
+void EBO::draw(int gl_geometry)
 {
-	sh->activate();
-	glDrawElements(GL_QUADS, indices->size(), GL_UNSIGNED_INT, (void*)(indices->data()));
+	glDrawElements(gl_geometry, indices->size(), GL_UNSIGNED_INT, (void*)0);
 }
-const std::vector<GLuint>& EBO::getValues()
+std::vector<GLuint>& EBO::getValues()
 {
 	return *(indices);
 }

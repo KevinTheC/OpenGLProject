@@ -9,7 +9,7 @@
 #include "keybinds/InputController.h"
 #include "graphic_structures/mesh_parsing/MeshParser.h"
 #include "graphic_structures/Mesh.h"
-//#define BUILD_TEST
+#define BUILD_TEST
 
 #ifdef LOGGING_DEBUG
 void GLAPIENTRY debugCallback(
@@ -25,9 +25,8 @@ void GLAPIENTRY debugCallback(
 #endif
 
 
-
-#ifndef BUILD_TEST
 #define gray .5f, .5f, .5f,
+#ifndef BUILD_TEST
 int height = 900;
 int width = 800;
 
@@ -64,28 +63,14 @@ int main()
     #endif
     Camera::instance()->updateProjection(width, height);
     
-    std::shared_ptr<Shader> sh(new Shader("./resources/shaders/test.vert","./resources/shaders/color.frag"));
+    std::shared_ptr<Shader> sh(new Shader("./resources/shaders/color.vert","./resources/shaders/color.frag"));
     sh->activate();
-    std::shared_ptr<Shader> sh2(new Shader("./resources/shaders/color.vert","./resources/shaders/color.frag"));
-    Mesh mesh2 = Mesh(new VBO(new std::vector<GLfloat>({
-        -.2f, 0.4f, -.2f,        gray
-        -.2f,  0.4f, .2f,      gray
-        .2f,  0.4f, .2f,       gray
-        .2f, 0.4f, -.2f, 		gray
-        0.0f, 0.8f, 0.0f,		gray
-        })),new EBO(new std::vector<GLuint>({
-        0U, 1U, 2U,
-        0U, 2U, 3U,
-        0U, 1U, 4U,
-        1U, 2U, 4U,
-        2U, 3U, 4U,
-        3U, 0U, 4U,
-            })),VAO::getVAO(sh2),sh2);
-    sh2->activate();
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/untitled.obj",sh);
 
-    Camera::instance()->setFocus((&mesh2)->getModel());
-    Camera::instance()->linkShader(sh2.get());
+    Camera::instance()->setFocus(glm::mat4(1.0f));
+    Camera::instance()->linkShader(sh.get());
+
+
     //textures
     /*int widthImg, heightImg, numColCh;
     unsigned char* bytes = stbi_load("Untitled.png", &widthImg, &heightImg, &numColCh, 0);
@@ -108,21 +93,19 @@ int main()
     */
     //textures
 
-    mesh->setContext([](Mesh* curr){
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        curr->getShader().get()->activate();
-        });
-    (&mesh2)->setContext([](Mesh* curr){
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        });
+    // mesh->setContext([](Mesh* curr){
+    //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //     curr->getShader().get()->activate();
+    //     });
+    // (&mesh2)->setContext([](Mesh* curr){
+    //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //     });
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-    //drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
-    drawables.push_back(std::pair<Mesh*,bool>(&mesh2,true));
-    //drawables.push_back(std::pair<Mesh*,bool>(mesh,false));
-    drawables.push_back(std::pair<Mesh*,bool>(&mesh2,false));
+    drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
+    // drawables.push_back(std::pair<Mesh*,bool>(&mesh2,true));
+    // //drawables.push_back(std::pair<Mesh*,bool>(mesh,false));
+    // drawables.push_back(std::pair<Mesh*,bool>(&mesh2,false));
     glEnable(GL_DEPTH_TEST);
-
-    Camera::instance()->setFocus((&mesh2)->getModel());
 
     InputController::addObserver(Camera::instance().get());
     glfwSetMouseButtonCallback(window, InputController::GLFWmouseButtonCB);
@@ -130,31 +113,25 @@ int main()
     glfwSetWindowSizeCallback(window, InputController::GLFWresizeCB);
     glfwSetKeyCallback(window, InputController::GLFWkeyCB);
     glfwSetScrollCallback(window, InputController::GLFWmouseWheelCB);
-    bool b = true;
+    GLuint highest = 0;
+    for (const auto& val : (*mesh->getEBO()).getValues())
+        if (val > highest)
+            highest = val;
+    LOG_ALL(std::to_string(highest));
     while (!glfwWindowShouldClose(window))
     {
-        try {
-        LOG_ALL("flag1");
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        LOG_ALL("flag2");
+        glClear(GL_COLOR_BUFFER_BIT);
         /* Render here */
+
         //glBindTexture(GL_TEXTURE_2D, texture);
         //o.transform(glm::vec3(0.0f,0.0f,0.001f));
-        // for (const auto& ptr : drawables)
-        //     if (ptr.second)
-        //         ptr.first->draw();
-        mesh2.draw();
-        LOG_ALL("flag3");
+        for (const auto& ptr : drawables)
+            if (ptr.second)
+                ptr.first->draw();
         glfwSwapBuffers(window);
-        LOG_ALL("flag4");
         glfwPollEvents();
-        LOG_ALL("flag5");
-        } catch (std::exception& e) {
-            LOG_DEBUG(e.what());
-        }
     }
     sh->erase();
-    sh2->erase();
     //glDeleteTextures(1,&texture);
     glfwTerminate();
     return 0;
@@ -171,7 +148,7 @@ int main()
         Logger::log << "GLFW failed to initialize." << std::endl;
         return -1;
     }
-    window = glfwCreateWindow(70, 70, "Model", NULL, NULL);
+    window = glfwCreateWindow(800, 800, "Model", NULL, NULL);
     if (!window)
     {
         Logger::log << "GLFW failed to create a window." << std::endl;
@@ -183,13 +160,87 @@ int main()
         Logger::log << "glew failed to initialize." << std::endl;
         return -1;
     }
-    glViewport(0, 0, 70, 70);
+    glViewport(0, 0, 800, 800);
 
 
-    Shader* sh = new Shader("./resources/shaders/color.vert","./resources/shaders/color.frag");
-    std::string str;
-    auto ty = std::ifstream("./resources/meshes/untitled.obj");
-    std::getline(ty,str);
-    OBJParser::parse("./resources/meshes/untitled.obj",sh);
+
+	std::shared_ptr<Shader> sh(new Shader("./resources/shaders/original.vert","./resources/shaders/original.frag"));
+
+
+    VBO vbo = VBO(new std::vector<GLfloat>({
+		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Lower left corner
+		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Lower right corner
+		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, gray// Upper corner
+		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, gray// Inner left
+		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, gray// Inner right
+		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Inner down
+	}));
+	// Indices for vertices order
+    EBO ebo = EBO(new std::vector<GLuint>({
+        0, 3, 5, // Lower left triangle
+		3, 2, 4, // Upper triangle
+		5, 4, 1  // Lower right triangle
+    }));
+
+    
+	// Create reference containers for the Vertex Array Object, the Vertex Buffer Object, and the Element Buffer Object
+	GLuint VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+    
+    vbo.bind();
+    ebo.bind();
+    // VAO vao = VAO(sh);
+    // vao.linkAttribs(sh,&vbo);
+	// Bind the VBO specifying it's a GL_ARRAY_BUFFER
+	// glBindBuffer(GL_ARRAY_BUFFER, vboi);
+	
+	// Introduce the indices into the EBO
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)12);
+	glEnableVertexAttribArray(1);
+
+	vbo.unbind();
+    glBindVertexArray(0);
+	// vao.unbind();
+	ebo.unbind();
+
+
+
+	// Main while loop
+	while (!glfwWindowShouldClose(window))
+	{
+		// Specify the color of the background
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		// Clean the back buffer and assign the new color to it
+		glClear(GL_COLOR_BUFFER_BIT);
+		// Tell OpenGL which Shader Program we want to use
+		glUseProgram(sh.get()->ID);
+
+		glBindVertexArray(VAO);
+        // vao.bind();
+        LOG_ALL("MINECRAFT");
+        ebo.draw(GL_TRIANGLES);
+		// Swap the back buffer with the front buffer
+		glfwSwapBuffers(window);
+		// Take care of all GLFW events
+		glfwPollEvents();
+	}
+
+
+
+	// Delete all the objects we've created
+    // vao.erase();
+	// glDeleteVertexArrays(1, &VAO);
+	vbo.erase();
+	ebo.erase();
+	glDeleteProgram(sh.get()->ID);
+	// Delete window before ending the program
+	glfwDestroyWindow(window);
+	// Terminate GLFW before ending the program
+	glfwTerminate();
+	return 0;
 }
 #endif

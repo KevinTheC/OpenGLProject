@@ -1,17 +1,17 @@
 #include "Mesh.h"
 Mesh::Mesh(VBO* vbparam,
     EBO* ebparam, 
-	std::reference_wrapper<VAO> vaparam,
+	VAO* vaparam,
     std::shared_ptr<Shader> shparam) : 
     vbo{vbparam}, ebo{ebparam}, vao{vaparam}, shader{shparam}
 {
     model = glm::mat4(1.0f);
     shader->activate();
-    vao.get().bind();
+    vao->bind();
     vbo->bind();
     ebo->bind();
-    vao.get().linkAttribs(shader);
-    vao.get().unbind();
+    vao->linkAttribs(shader,vbo);
+    vao->unbind();
     vbo->unbind();
     ebo->unbind();
 };
@@ -23,7 +23,7 @@ const VBO* Mesh::getVBO()
 {
     return vbo;
 }
-const EBO* Mesh::getEBO()
+EBO* Mesh::getEBO()
 {
     return ebo;
 }
@@ -43,7 +43,8 @@ void Mesh::draw()
     drawFunction(this);
 	int modelLoc = glGetUniformLocation(shader->ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	vao.get().bind();
-	ebo->draw(shader);
-	vao.get().unbind();
+    shader->activate();
+	vao->bind();
+	ebo->draw(geometry);
+	vao->unbind();
 }

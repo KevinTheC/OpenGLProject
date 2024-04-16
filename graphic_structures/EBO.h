@@ -8,11 +8,11 @@ class EBO
 public:
 	GLuint ID;
 	EBO(std::vector<GLuint>* vec);
-	void draw(std::shared_ptr<Shader> sh);
+	void draw(int gl_geometry);
 	void bind();
 	void unbind();
 	void erase();
-	const std::vector<GLuint>& getValues();
+	std::vector<GLuint>& getValues();
 private:
 	std::vector<GLuint>* indices;
 };

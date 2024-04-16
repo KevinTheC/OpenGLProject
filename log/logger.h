@@ -1,11 +1,11 @@
-#ifndef LOGGER
-#define LOGGER
+#pragma once
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <ostream>
 #include <chrono>
 #include <filesystem>
+#include <vector>
 //DEFINE LOG LEVEL HERE
 
 #define LOGGING_ALL
@@ -30,14 +30,16 @@
 #endif
 
 
-#define LOGGING_ACTIVE
 namespace fs = std::filesystem;
 class Logger
 {
 private:
     inline static std::ofstream output;
+    inline static std::vector<std::string> waiting;
     Logger();
 public:
+    static void queue(std::string);
+    static std::string pop();
     typedef enum LOGGER_LEVEL {
         INFO,
         ERROR,
@@ -47,15 +49,13 @@ public:
     template <typename T>
     inline friend Logger operator<<(Logger l, T t)
     {
-    if (!Logger::output.is_open())
-        throw std::logic_error("Logger output stream is not initialized. Call initLogger() before attempting to write to the log.");
-    const std::time_t var = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    Logger::output << std::put_time(std::localtime(&var), "[%F %T]") << " " << t << std::endl;
-    return l;
+        if (!Logger::output.is_open())
+            throw std::logic_error("Logger output stream is not initialized. Call initLogger() before attempting to write to the log.");
+        const std::time_t var = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        Logger::output << std::put_time(std::localtime(&var), "[%F %T]") << " " << t << std::endl;
+        return l;
     };
     friend Logger operator<<(Logger l, const char* str);
     friend Logger operator<<(Logger l, std::basic_ostream<char, std::char_traits<char>>& (*flusher)(std::basic_ostream<char, std::char_traits<char>>&));
     static Logger log;
-    
 };
-#endif

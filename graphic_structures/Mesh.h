@@ -17,19 +17,20 @@ class Mesh
 private:
 	VBO* vbo;
 	EBO* ebo;
-	std::reference_wrapper<VAO> vao;
+	VAO* vao;
 	std::shared_ptr<Shader> shader;
+	int geometry = GL_QUADS;
 	glm::mat4 model;
 	void(*drawFunction)(Mesh*) = [](Mesh*) {};
 public:
 	Mesh(VBO*,
 	EBO*, 
-	std::reference_wrapper<VAO>,
+	VAO*,
 	std::shared_ptr<Shader>);
 
 	const glm::mat4& getModel();
     const VBO* getVBO();
-    const EBO* getEBO();
+    EBO* getEBO();
 	const std::shared_ptr<Shader> getShader();
 
 	void transform(glm::mat4 transform);

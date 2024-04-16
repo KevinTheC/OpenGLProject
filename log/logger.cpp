@@ -11,11 +11,24 @@ Logger operator<<(Logger l, std::basic_ostream<char, std::char_traits<char>>& (*
 {
     Logger::output << flusher;
 }
-
+void Logger::queue(std::string str)
+{
+    Logger::waiting.push_back(str);
+    std::cout << Logger::waiting.size();
+}
+std::string Logger::pop()
+{
+    std::string total;
+    while (!Logger::waiting.empty())
+    {
+        total = total + Logger::waiting.back();
+        Logger::waiting.pop_back();
+    }
+    return total;
+}
 
 void Logger::initLogger()
 {
-    #ifdef LOGGING_ACTIVE
     try
     {
         int highest = 0;
@@ -37,9 +50,8 @@ void Logger::initLogger()
     {
         throw std::runtime_error("Subfolder /log does not exist, can't instantiate logger.");
     }
-    #endif
 }
 Logger::Logger()
 {
-    
+
 }

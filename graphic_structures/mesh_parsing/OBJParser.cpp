@@ -61,8 +61,8 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
     } while (!line.empty());
     LOG_DEBUG("Mesh Parsed.");
     EBO* ebo = new EBO(faces);
-
-    std::vector<GLfloat>* floats = new std::vector<GLfloat>(vertexes->size());
+    
+    std::vector<GLfloat>* floats = new std::vector<GLfloat>();
     for (i=0;i<vertexes->size();i++)
     {
         floats->push_back(vertexes->at(i).position[0]);
@@ -72,7 +72,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
         floats->push_back(vertexes->at(i).UV[1]);
     }
     VBO* vbo = new VBO(floats);
-    Mesh* ptr = new Mesh(vbo,ebo,VAO::getVAO(sh),sh);
+    Mesh* ptr = new Mesh(vbo,ebo,new VAO(sh),sh);
     LOG_ALL(std::string("Size of EBO, then VBO:" )+std::to_string(ebo->getValues().size())+std::string(", ")+std::to_string(vbo->getValues().size()));
     return ptr;
 }
