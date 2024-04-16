@@ -1,20 +1,26 @@
 #include "OBJParser.h"
 Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
 {
-    LOG_DEBUG(std::string("Parsing a shader at: ")+path);
+    LOG_DEBUG(std::string("Parsing a mesh at: ")+path);
+
     std::vector<glm::vec3> prevertex;
     std::unordered_map<int_fast16_t,glm::vec3> prevertexmap;
     std::vector<glm::vec2> pretexture;
     std::unordered_map<int_fast16_t,glm::vec2> pretexturemap;
 
     OBJParser::getVertexes(std::ifstream(path),prevertex,prevertexmap);
+
     LOG_DEBUG(std::string("Vertexes parsed"));
+    LOG_ALL(std::string("Count: ")+std::to_string(prevertex.size()));
+
     OBJParser::getUVs(std::ifstream(path),pretexture,pretexturemap);
+
     LOG_DEBUG(std::string("UVs parsed"));
+    LOG_ALL(std::string("Count: ")+std::to_string(pretexture.size()));
+
     //the vertex UV pair the face is pointing to will not be at a constant position. therefore, we need to first read all UV mappings and vertexes, then use the hashmap to O(1) access
     //the vertex and UV indexes, and generate the VBO's representation of the pair. Afterwards, we will determine the position at which face the ebo should point. EBO will be in quad format
     std::vector<GLuint>* faces = new std::vector<GLuint>();
-    
     std::vector<Vertex>* vertexes = new std::vector<Vertex>();
     std::unordered_map<Vertex,int_fast16_t> vertexmap;
 
@@ -26,6 +32,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
     //ifstream loaded up to faces
     int i = 0;
     do {
+
         std::istringstream str{line};
         std::string f;
         Vertex v;
@@ -35,10 +42,6 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
         {
             str >> f;
             auto vec = splitString(f,'/');
-            #ifdef LOG_ALL
-            for (const auto& r : vec)
-                LOG_ALL(r);
-            #endif
             try {
                 v.position = prevertexmap.at(std::stoi(vec[0]));
                 v.UV = pretexturemap.at(std::stoi(vec[1]));
@@ -50,17 +53,27 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
             else
             {
                 vertexes->push_back(v);
+                faces->push_back(i);
                 vertexmap.emplace(v,i++);
             }
-            std::getline(stream,line);
-            LOG_ALL(std::string("Face parsed"));
         }
+        std::getline(stream,line);
     } while (!line.empty());
     LOG_DEBUG("Mesh Parsed.");
-    //INTENTIONAL CRASHING
     EBO* ebo = new EBO(faces);
-    VBO* vbo = new VBO(vertexes);
+
+    std::vector<GLfloat>* floats = new std::vector<GLfloat>(vertexes->size());
+    for (i=0;i<vertexes->size();i++)
+    {
+        floats->push_back(vertexes->at(i).position[0]);
+        floats->push_back(vertexes->at(i).position[1]);
+        floats->push_back(vertexes->at(i).position[2]);
+        floats->push_back(vertexes->at(i).UV[0]);
+        floats->push_back(vertexes->at(i).UV[1]);
+    }
+    VBO* vbo = new VBO(floats);
     Mesh* ptr = new Mesh(vbo,ebo,VAO::getVAO(sh),sh);
+    LOG_ALL(std::string("Size of EBO, then VBO:" )+std::to_string(ebo->getValues().size())+std::string(", ")+std::to_string(vbo->getValues().size()));
     return ptr;
 }
 

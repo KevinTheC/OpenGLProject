@@ -12,6 +12,7 @@ public:
 	void bind();
 	void unbind();
 	void erase();
+	const std::vector<GLuint>& getValues();
 private:
 	std::vector<GLuint>* indices;
 };

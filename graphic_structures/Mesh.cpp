@@ -6,6 +6,14 @@ Mesh::Mesh(VBO* vbparam,
     vbo{vbparam}, ebo{ebparam}, vao{vaparam}, shader{shparam}
 {
     model = glm::mat4(1.0f);
+    shader->activate();
+    vao.get().bind();
+    vbo->bind();
+    ebo->bind();
+    vao.get().linkAttribs(shader);
+    vao.get().unbind();
+    vbo->unbind();
+    ebo->unbind();
 };
 const glm::mat4& Mesh::getModel()
 {
@@ -26,17 +34,16 @@ const std::shared_ptr<Shader> Mesh::getShader()
 void Mesh::transform(glm::mat4 transform) {
     model += transform;
 }
-void Mesh::setContext(void(*func)())
+void Mesh::setContext(void(*func)(Mesh* mesh))
 {
     drawFunction = func;
 }
 void Mesh::draw()
 {
-    vbo->bind();
-    drawFunction();
+    drawFunction(this);
 	int modelLoc = glGetUniformLocation(shader->ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	vao.get().bind();
 	ebo->draw(shader);
-	vao.get().bind();
+	vao.get().unbind();
 }

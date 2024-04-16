@@ -20,7 +20,7 @@ private:
 	std::reference_wrapper<VAO> vao;
 	std::shared_ptr<Shader> shader;
 	glm::mat4 model;
-	void(*drawFunction)() = []() {};
+	void(*drawFunction)(Mesh*) = [](Mesh*) {};
 public:
 	Mesh(VBO*,
 	EBO*, 
@@ -34,6 +34,6 @@ public:
 
 	void transform(glm::mat4 transform);
 
-	void setContext(void(*func)());
+	void setContext(void(*func)(Mesh* mesh));
 	void draw();
 };

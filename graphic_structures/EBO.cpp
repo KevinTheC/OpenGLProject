@@ -24,3 +24,7 @@ void EBO::draw(std::shared_ptr<Shader> sh)
 	sh->activate();
 	glDrawElements(GL_QUADS, indices->size(), GL_UNSIGNED_INT, (void*)(indices->data()));
 }
+const std::vector<GLuint>& EBO::getValues()
+{
+	return *(indices);
+}

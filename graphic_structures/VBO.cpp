@@ -1,11 +1,11 @@
 #include "VBO.h"
 
-VBO::VBO(std::vector<Vertex>* vec)
+VBO::VBO(std::vector<GLfloat>* vec)
 {
 	vertices = vec;
 	glGenBuffers(1, &ID);
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
-	glBufferData(GL_ARRAY_BUFFER, vertices->size()*sizeof(Vertex), vertices->data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices->size()*sizeof(GLfloat), vertices->data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 void VBO::bind()
@@ -23,6 +23,10 @@ void VBO::erase()
 //wrong
 void VBO::update() {
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
-	glBufferData(GL_ARRAY_BUFFER, vertices->size() * sizeof(Vertex), vertices->data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices->size() * sizeof(GLfloat), vertices->data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+const std::vector<GLfloat>& VBO::getValues()
+{
+	return *(vertices);
 }

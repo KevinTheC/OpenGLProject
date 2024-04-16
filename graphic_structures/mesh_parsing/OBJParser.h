@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>
-#include "EBO.h"
-#include "VBO.h"
-#include "VAO.h"
-#include "Mesh.h"
+#include "graphic_structures/EBO.h"
+#include "graphic_structures/VBO.h"
+#include "graphic_structures/VAO.h"
+#include "graphic_structures/Mesh.h"
 typedef struct BufferPointers{
     std::reference_wrapper<VBO> vbo;
     std::reference_wrapper<EBO> ebo;

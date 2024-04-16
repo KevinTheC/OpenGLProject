@@ -33,6 +33,7 @@ void VAO::linkAttribs(std::shared_ptr<Shader> sh)
 		glEnableVertexAttribArray(attribs++);
 		total += i;
 	}
+	LOG_ALL(std::string("Attributes, then total: ")+std::to_string(attribs)+std::string(" ")+std::to_string(total));
 }
 void VAO::bind()
 {

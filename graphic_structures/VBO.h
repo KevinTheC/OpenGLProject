@@ -28,13 +28,14 @@ class VBO
 {
 public:
 	GLuint ID;
-	VBO(std::vector<Vertex>*);
+	VBO(std::vector<GLfloat>*);
+	const std::vector<GLfloat>& getValues();
 	void bind();
 	void unbind();
 	void erase();
 	void update();
 private:
-	std::vector<Vertex>* vertices;
+	std::vector<GLfloat>* vertices;
 };
 #endif
 

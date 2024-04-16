@@ -14,7 +14,7 @@ std::string get_file_contents(const char* filename)
 	}
 	throw(errno);
 }
-GLuint Shader::current;
+GLuint Shader::current = 0;
 Shader::Shader(const char* vertexFile, const char* fragmentFile)
 {
 	std::string vertexCode = get_file_contents(vertexFile);
@@ -51,6 +51,7 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
 	//delete the objects, already exist in the program
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+	LOG_DEBUG(std::string("Shaders parsed at: ")+std::string(vertexFile)+std::string(" ,")+std::string(fragmentFile));
 }
 
 
