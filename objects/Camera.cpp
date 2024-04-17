@@ -19,19 +19,10 @@ Camera::Camera()
 void Camera::linkShader(Shader* sh)
 {
     sh->activate();
-    GLuint ufBlockIndex = glGetUniformBlockIndex(sh->ID, "Matrices");
-    glUniformBlockBinding(sh->ID, ufBlockIndex, 0);
-
-    glGenBuffers(1, &uboMatrices);
-
-    glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-    glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
-
-    glBindBufferRange(GL_UNIFORM_BUFFER, 0, uboMatrices, 0, 2 * sizeof(glm::mat4));
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(proj));
-    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
-
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    GLuint projLoc = glGetUniformLocation(sh->ID, "proj");
+    GLuint viewLoc = glGetUniformLocation(sh->ID, "view");
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 }
 void Camera::updateProjection(int w, int h)
 {
@@ -39,6 +30,7 @@ void Camera::updateProjection(int w, int h)
     glViewport(0, 0, w, h);
     width = w;
     height = h;
+    refresh();
 }
 void Camera::setFocus(glm::mat4 focus)
 {
@@ -168,8 +160,4 @@ void Camera::refresh()
     viewpoint[0] += xperc * temp;
 
     view = glm::lookAt(viewpoint, center, glm::vec3(0.0f, 1.0f, 0.0f));
-
-    glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

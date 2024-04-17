@@ -9,6 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "VAO.h"
 #include "EBO.h"
+#include "objects/Camera.h"
 #include <stdint.h>
 #include "Shader.h"
 #include <array>
@@ -35,8 +36,9 @@ public:
     const VBO* getVBO();
     EBO* getEBO();
 	const std::shared_ptr<Shader> getShader();
-
-	void transform(glm::mat4 transform);
+	void scale(glm::vec3);
+	void translate(glm::vec3);
+	void rotate(GLfloat, glm::vec3);
 
 	void setContext(void(*func)(Mesh* mesh));
 	void draw();

@@ -26,8 +26,17 @@ const std::shared_ptr<Shader> Mesh::getShader()
 {
     return shader;
 }
-void Mesh::transform(glm::mat4 transform) {
-    model += transform;
+void Mesh::scale(glm::vec3 scalar)
+{
+    model = glm::scale(model,scalar);
+}
+void Mesh::translate(glm::vec3 translation)
+{
+    model = glm::translate(model,translation);
+}
+void Mesh::rotate(GLfloat angle, glm::vec3 vect)
+{
+    model = glm::rotate(model,angle,vect);
 }
 void Mesh::setContext(void(*func)(Mesh* mesh))
 {
@@ -36,9 +45,9 @@ void Mesh::setContext(void(*func)(Mesh* mesh))
 void Mesh::draw()
 {
     drawFunction(this);
-	int modelLoc = glGetUniformLocation(shader->ID, "model");
+    Camera::instance()->linkShader(shader.get());
+    GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    shader->activate();
 	vao->bind();
 	ebo->draw(geometry);
 	vao->unbind();
