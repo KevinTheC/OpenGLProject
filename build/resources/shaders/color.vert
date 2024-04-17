@@ -1,7 +1,7 @@
 #version 330 core
-//3,3
+//3,2
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
+layout (location = 1) in vec2 aColor;
 
 layout (std140) uniform Matrices
 {
@@ -16,5 +16,5 @@ out vec3 color;
 void main()
 {
    gl_Position = proj * view * model * vec4(aPos, 1.0);
-   color = aColor;
+   color = vec3(aColor, 1.0f);
 }

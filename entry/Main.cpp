@@ -35,7 +35,6 @@ std::vector<std::pair<Mesh*,bool>> drawables;
 using namespace glm;
 int main()
 {
-    std::cout << "";
     Logger::initLogger();
     GLFWwindow* window;
     if (!glfwInit())
@@ -61,14 +60,23 @@ int main()
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
-    Camera::instance()->updateProjection(width, height);
+    // Camera::instance()->updateProjection(width, height);
     
-    std::shared_ptr<Shader> sh(new Shader("./resources/shaders/color.vert","./resources/shaders/color.frag"));
-    sh->activate();
-    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/untitled.obj",sh);
-
-    Camera::instance()->setFocus(glm::mat4(1.0f));
-    Camera::instance()->linkShader(sh.get());
+    std::shared_ptr<Shader> sh3(new Shader("./resources/shaders/original.vert","./resources/shaders/original.frag"));
+    Mesh m = Mesh(new VBO(new std::vector<GLfloat>({
+		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Lower left corner
+		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Lower right corner
+		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, gray// Upper corner
+		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, gray// Inner left
+		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, gray// Inner right
+		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Inner down
+	})),new EBO(new std::vector<GLuint>({
+        0, 3, 5, // Lower left triangle
+		3, 2, 4, // Upper triangle
+		5, 4, 1  // Lower right triangle
+    })), new VAO(sh3),sh3,GL_TRIANGLES);
+    // Camera::instance()->setFocus(glm::mat4(1.0f));
+    // Camera::instance()->linkShader(sh3.get());
 
 
     //textures
@@ -100,38 +108,31 @@ int main()
     // (&mesh2)->setContext([](Mesh* curr){
     //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     //     });
-    glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-    drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
-    // drawables.push_back(std::pair<Mesh*,bool>(&mesh2,true));
+    // drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
     // //drawables.push_back(std::pair<Mesh*,bool>(mesh,false));
     // drawables.push_back(std::pair<Mesh*,bool>(&mesh2,false));
     glEnable(GL_DEPTH_TEST);
 
-    InputController::addObserver(Camera::instance().get());
-    glfwSetMouseButtonCallback(window, InputController::GLFWmouseButtonCB);
-    glfwSetCursorPosCallback(window, InputController::GLFWmouseMoveCB);
-    glfwSetWindowSizeCallback(window, InputController::GLFWresizeCB);
-    glfwSetKeyCallback(window, InputController::GLFWkeyCB);
-    glfwSetScrollCallback(window, InputController::GLFWmouseWheelCB);
-    GLuint highest = 0;
-    for (const auto& val : (*mesh->getEBO()).getValues())
-        if (val > highest)
-            highest = val;
-    LOG_ALL(std::to_string(highest));
+    // InputController::addObserver(Camera::instance().get());
+    // glfwSetMouseButtonCallback(window, InputController::GLFWmouseButtonCB);
+    // glfwSetCursorPosCallback(window, InputController::GLFWmouseMoveCB);
+    // glfwSetWindowSizeCallback(window, InputController::GLFWresizeCB);
+    // glfwSetKeyCallback(window, InputController::GLFWkeyCB);
+    // glfwSetScrollCallback(window, InputController::GLFWmouseWheelCB);
+
     while (!glfwWindowShouldClose(window))
     {
+        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         /* Render here */
 
         //glBindTexture(GL_TEXTURE_2D, texture);
         //o.transform(glm::vec3(0.0f,0.0f,0.001f));
-        for (const auto& ptr : drawables)
-            if (ptr.second)
-                ptr.first->draw();
+        m.draw();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    sh->erase();
+    sh3->erase();
     //glDeleteTextures(1,&texture);
     glfwTerminate();
     return 0;
@@ -163,49 +164,32 @@ int main()
     glViewport(0, 0, 800, 800);
 
 
-
-	std::shared_ptr<Shader> sh(new Shader("./resources/shaders/original.vert","./resources/shaders/original.frag"));
-
-
-    VBO vbo = VBO(new std::vector<GLfloat>({
+    std::shared_ptr<Shader> sh3(new Shader("./resources/shaders/original.vert","./resources/shaders/original.frag"));       
+    std::shared_ptr<Shader> sh(new Shader("./resources/shaders/test.vert","./resources/shaders/color.frag"));
+    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/untitled.obj",sh3);
+    
+    Mesh m = Mesh(new VBO(new std::vector<GLfloat>({
 		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Lower left corner
 		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Lower right corner
 		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, gray// Upper corner
 		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, gray// Inner left
 		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, gray// Inner right
 		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f, gray// Inner down
-	}));
-	// Indices for vertices order
-    EBO ebo = EBO(new std::vector<GLuint>({
+	})),new EBO(new std::vector<GLuint>({
         0, 3, 5, // Lower left triangle
 		3, 2, 4, // Upper triangle
 		5, 4, 1  // Lower right triangle
-    }));
-
+    })), new VAO(sh3),sh3,GL_TRIANGLES);
     
-	// Create reference containers for the Vertex Array Object, the Vertex Buffer Object, and the Element Buffer Object
-	GLuint VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-    
-    vbo.bind();
-    ebo.bind();
-    // VAO vao = VAO(sh);
-    // vao.linkAttribs(sh,&vbo);
 	// Bind the VBO specifying it's a GL_ARRAY_BUFFER
 	// glBindBuffer(GL_ARRAY_BUFFER, vboi);
 	
 	// Introduce the indices into the EBO
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)12);
-	glEnableVertexAttribArray(1);
-
-	vbo.unbind();
-    glBindVertexArray(0);
-	// vao.unbind();
-	ebo.unbind();
+	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	// glEnableVertexAttribArray(0);
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)12);
+	// glEnableVertexAttribArray(1);
 
 
 
@@ -216,13 +200,10 @@ int main()
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		// Clean the back buffer and assign the new color to it
 		glClear(GL_COLOR_BUFFER_BIT);
-		// Tell OpenGL which Shader Program we want to use
-		glUseProgram(sh.get()->ID);
 
-		glBindVertexArray(VAO);
-        // vao.bind();
-        LOG_ALL("MINECRAFT");
-        ebo.draw(GL_TRIANGLES);
+		// glBindVertexArray(VAO);
+        m.draw();
+        mesh->draw();
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
@@ -234,9 +215,7 @@ int main()
 	// Delete all the objects we've created
     // vao.erase();
 	// glDeleteVertexArrays(1, &VAO);
-	vbo.erase();
-	ebo.erase();
-	glDeleteProgram(sh.get()->ID);
+	glDeleteProgram(sh3.get()->ID);
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program

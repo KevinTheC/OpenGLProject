@@ -6,12 +6,14 @@ VAO::VAO(std::shared_ptr<Shader> sh) {
 	glGenVertexArrays(1, &ID);
 }
 //VBO MUST BE BOUND BEFORE DOING THIS!
-void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo)
+void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo, EBO* ebo)
 {
 	bind();
+	vbo->bind();
+	ebo->bind();
 	attribs = 0;
 	total = 0;
-	vbo->bind();
+
 	std::vector<int> vec = sh->getAttribs();
 	int stride = 0;
 	//I have no idea whats going on here but I need to bind
@@ -25,7 +27,9 @@ void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo)
 		total += i;
 	}
 	LOG_ALL(std::string("Attributes, then total: ")+std::to_string(attribs)+std::string(" ")+std::to_string(total));
+	vbo->unbind();
 	unbind();
+	ebo->unbind();
 }
 void VAO::bind()
 {

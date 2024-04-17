@@ -72,7 +72,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
         floats->push_back(vertexes->at(i).UV[1]);
     }
     VBO* vbo = new VBO(floats);
-    Mesh* ptr = new Mesh(vbo,ebo,new VAO(sh),sh);
+    Mesh* ptr = new Mesh(vbo,ebo,new VAO(sh),sh,GL_QUADS);
     LOG_ALL(std::string("Size of EBO, then VBO:" )+std::to_string(ebo->getValues().size())+std::string(", ")+std::to_string(vbo->getValues().size()));
     return ptr;
 }

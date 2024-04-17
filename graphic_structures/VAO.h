@@ -3,13 +3,14 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include "VBO.h"
+#include "EBO.h"
 #include "Shader.h"
 class VAO
 {
 public:
 	static GLuint boundID;
 	GLuint ID;
-	void linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo);
+	void linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo, EBO* ebo);
 	void bind();
 	void unbind();
 	void erase();

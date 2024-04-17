@@ -71,12 +71,14 @@ void Shader::compileError(unsigned int shader, const char* type)
 {
 	GLint hasCompiled;
 	char infoLog[1024];
+	glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+	LOG_ALL(std::string("COMPILATION INFO: ")+std::string(infoLog));
 	if (type != "PROGRAM")
 	{
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
+		LOG_ALL(infoLog);
 		if (hasCompiled == GL_FALSE)
 		{
-			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
 			Logger::log << "SHADER_COMPILATION_ERROR for:" << type << "\n";
 			Logger::log << infoLog << "\n";
 		}
@@ -86,7 +88,6 @@ void Shader::compileError(unsigned int shader, const char* type)
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
 		if (hasCompiled == GL_FALSE)
 		{
-			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
 			Logger::log << "SHADER_COMPILATION_ERROR for:" << type << "\n";
 			Logger::log << infoLog << "\n";
 		}

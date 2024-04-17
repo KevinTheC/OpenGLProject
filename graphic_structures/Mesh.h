@@ -9,6 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "VAO.h"
 #include "EBO.h"
+#include <stdint.h>
 #include "Shader.h"
 #include <array>
 #include <stb-master/stb_image.h>
@@ -18,15 +19,17 @@ private:
 	VBO* vbo;
 	EBO* ebo;
 	VAO* vao;
+
 	std::shared_ptr<Shader> shader;
-	int geometry = GL_QUADS;
+	uint_fast8_t geometry;
 	glm::mat4 model;
 	void(*drawFunction)(Mesh*) = [](Mesh*) {};
 public:
 	Mesh(VBO*,
 	EBO*, 
 	VAO*,
-	std::shared_ptr<Shader>);
+	std::shared_ptr<Shader>,
+	uint_fast8_t);
 
 	const glm::mat4& getModel();
     const VBO* getVBO();
