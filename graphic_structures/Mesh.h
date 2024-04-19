@@ -13,7 +13,7 @@
 #include <stdint.h>
 #include "Shader.h"
 #include <array>
-#include <stb-master/stb_image.h>
+#include <stb_image.h>
 class Mesh
 {
 private:
@@ -21,10 +21,9 @@ private:
 	EBO* ebo;
 	VAO* vao;
 
-	std::shared_ptr<Shader> shader;
 	uint_fast8_t geometry;
 	glm::mat4 model;
-	void(*drawFunction)(Mesh*) = [](Mesh*) {};
+	void(*drawFunction)(const Mesh*) = [](const Mesh*) {};
 public:
 	Mesh(VBO*,
 	EBO*, 
@@ -32,6 +31,8 @@ public:
 	std::shared_ptr<Shader>,
 	uint_fast8_t);
 
+	std::shared_ptr<Shader> shader;
+	
 	const glm::mat4& getModel();
     const VBO* getVBO();
     EBO* getEBO();
@@ -40,6 +41,6 @@ public:
 	void translate(glm::vec3);
 	void rotate(GLfloat, glm::vec3);
 
-	void setContext(void(*func)(Mesh* mesh));
-	void draw();
+	void setContext(void(*func)(const Mesh* mesh));
+	void draw() const;
 };

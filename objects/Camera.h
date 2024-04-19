@@ -50,13 +50,11 @@ private:
 	static float distance(std::pair<float,float>&, std::pair<float,float>);
 	static std::shared_ptr<Camera> camera;
 
-	void notify(glm::mat4 location);
 	void refresh();
 
 	int width;
 	int height;
 	glm::mat4 focus;
-	unsigned int uboMatrices;
 	float total;
 	float roll;
 	float yaw;

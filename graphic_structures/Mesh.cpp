@@ -38,11 +38,11 @@ void Mesh::rotate(GLfloat angle, glm::vec3 vect)
 {
     model = glm::rotate(model,angle,vect);
 }
-void Mesh::setContext(void(*func)(Mesh* mesh))
+void Mesh::setContext(void(*func)(const Mesh* mesh))
 {
     drawFunction = func;
 }
-void Mesh::draw()
+void Mesh::draw() const
 {
     drawFunction(this);
     Camera::instance()->linkShader(shader.get());

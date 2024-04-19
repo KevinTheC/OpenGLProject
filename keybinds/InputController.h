@@ -23,28 +23,28 @@ private:
 public:
 	template <typename T>
 	static void addObserver(T* t) {
-		if (dynamic_cast<DragListener*>(t))
+		if constexpr (std::is_base_of<DragListener,T>::value)
 			draggers.push_back(t);
-		if (dynamic_cast<ResizeListener*>(t))
+		if constexpr (std::is_base_of<ResizeListener,T>::value)
 			resizers.push_back(t);
-		if (dynamic_cast<MouseButtonListener*>(t))
+		if constexpr (std::is_base_of<MouseButtonListener,T>::value)
 			mbListeners.push_back(t);
-		if (dynamic_cast<KeyListener*>(t))
+		if constexpr (std::is_base_of<KeyListener,T>::value)
 			kListeners.push_back(t);
-		if (dynamic_cast<MouseWheelListener*>(t))
+		if constexpr (std::is_base_of<MouseWheelListener,T>::value)
 			mwListeners.push_back(t);
 	}
 	template <typename T>
 	static void removeObserver(T* t) {
-		if (dynamic_cast<DragListener*>(t))
+		if constexpr (std::is_base_of<DragListener,T>::value)
 			remove(t, draggers);
-		if (dynamic_cast<ResizeListener*>(t))
+		if constexpr (std::is_base_of<ResizeListener,T>::value)
 			remove(t, resizers);
-		if (dynamic_cast<MouseButtonListener*>(t))
+		if constexpr (std::is_base_of<MouseButtonListener,T>::value)
 			remove(t, mbListeners);
-		if (dynamic_cast<KeyListener*>(t))
+		if constexpr (std::is_base_of<KeyListener,T>::value)
 			remove(t, kListeners);
-		if (dynamic_cast<MouseWheelListener*>(t))
+		if constexpr (std::is_base_of<MouseWheelListener,T>::value)
 			remove(t, mwListeners);
 	}
 

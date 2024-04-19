@@ -11,7 +11,6 @@ Camera::Camera()
     roll = 0.0f;
     xpos = 0;
     ypos = 0;
-    uboMatrices = 0;
     proj = glm::mat4(1.0f);
     view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, -0.5f, -1.0f));
@@ -67,6 +66,7 @@ void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int m
         }
         else
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    //UNUSED
     else if (button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS && GLFW_PRESS == glfwGetKey(window,GLFW_KEY_LEFT_CONTROL))
     {
         double x;
@@ -81,10 +81,9 @@ void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int m
         
     }
 }
-//temp
 void Camera::handleMouseWheel(GLFWwindow* window, double xoffset, double yoffset)
 {
-    total += yoffset * PAN_SCALAR * -1;
+    total += yoffset * PAN_SCALAR * -1 * 10;
     refresh();
 }
 glm::vec3 Camera::panDirection(float xdiff, float ydiff)
@@ -135,7 +134,7 @@ void Camera::handleDrag(GLFWwindow* window,double xnewpos, double ynewpos) {
             xpos = xnewpos;
             ypos = ynewpos;
         }
-        else
+        else if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
         {
             yaw -= (float)glm::radians(xpos - xnewpos);
             roll += (float)glm::radians(ypos - ynewpos);
