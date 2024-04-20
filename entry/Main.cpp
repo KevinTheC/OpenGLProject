@@ -67,10 +67,6 @@ int main()
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/untitled.obj",sh);
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
-    mesh->setContext([](const Mesh* mesh){
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        Texture::getTexture("./resources/textures/Untitled.png").bind(GL_TEXTURE0,GL_TEXTURE_2D).activate(mesh->shader.get(),"tex0");
-    });
     drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
 
     Camera::instance()->updateProjection(width, height);

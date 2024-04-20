@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "VAO.h"
+#include "Texture.h"
 #include "EBO.h"
 #include "objects/Camera.h"
 #include <stdint.h>
@@ -20,7 +21,6 @@ private:
 	VBO* vbo;
 	EBO* ebo;
 	VAO* vao;
-
 	uint_fast8_t geometry;
 	glm::mat4 model;
 	void(*drawFunction)(const Mesh*) = [](const Mesh*) {};
@@ -30,9 +30,9 @@ public:
 	VAO*,
 	std::shared_ptr<Shader>,
 	uint_fast8_t);
-
 	std::shared_ptr<Shader> shader;
 	
+	std::vector<Texture*> textures;
 	const glm::mat4& getModel();
     const VBO* getVBO();
     EBO* getEBO();

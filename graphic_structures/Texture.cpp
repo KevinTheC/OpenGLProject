@@ -3,6 +3,8 @@ Texture::Texture(std::string path)
 {
     int width,height,colch;
     unsigned char* bytes = stbi_load(path.c_str(), &width, &height, &colch, 0);
+    if ((uintptr_t)bytes == (uintptr_t)"can't fopen" || (uintptr_t)bytes == (uintptr_t)"Unable to open file")
+        LOG_ALERT(std::string("No texture found at ")+path);
     glGenTextures(1, &ID);
     bind(GL_TEXTURE0,GL_TEXTURE_2D);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -24,14 +26,14 @@ Texture& Texture::getTexture(std::string path)
 }
 Texture& Texture::bind(int loc, int type = GL_TEXTURE_2D)
 {
-    glActiveTexture(loc);
+    glActiveTexture(GL_TEXTURE0+loc);
     glBindTexture(type,ID);
     return *this;
 }
-void Texture::activate(Shader* ptr,std::string location)
+void Texture::activate(Shader* ptr,int index)
 {
     ptr->activate();
-    GLuint loc = glGetUniformLocation(ptr->ID,location.c_str());
+    GLuint loc = glGetUniformLocation(ptr->ID,(std::string("tex[")+std::to_string(index)+std::string("]")).c_str());
     glUniform1i(loc, 0);
 }
 void Texture::clear(int loc)

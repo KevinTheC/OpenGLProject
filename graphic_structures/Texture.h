@@ -13,8 +13,8 @@ private:
     inline static std::unordered_map<std::string,Texture> map;
 public:
     static Texture& getTexture(std::string);
-    Texture& bind(int location,int type);
-    void activate(Shader*,std::string);
+    Texture& bind(int offset,int type);
+    void activate(Shader*,int);
     static void clear(int);
     void erase();
 };

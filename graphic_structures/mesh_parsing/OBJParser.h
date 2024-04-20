@@ -10,6 +10,7 @@
 #include "graphic_structures/VBO.h"
 #include "graphic_structures/VAO.h"
 #include "graphic_structures/Mesh.h"
+#include "graphic_structures/Texture.h"
 typedef struct BufferPointers{
     std::reference_wrapper<VBO> vbo;
     std::reference_wrapper<EBO> ebo;
@@ -21,4 +22,6 @@ private:
     static void getVertexes(std::ifstream stream, std::vector<glm::vec3>& prephase, std::unordered_map<int_fast16_t,glm::vec3>& premap);
     static void getUVs(std::ifstream stream, std::vector<glm::vec2>& prephase, std::unordered_map<int_fast16_t,glm::vec2>& premap);
     static std::vector<std::string> splitString(std::string, char);
+    static std::string changeExtension(std::string);
+    static void loadTextures(std::ifstream stream, Mesh* mesh);
 };

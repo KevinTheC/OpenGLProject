@@ -44,6 +44,8 @@ void Mesh::setContext(void(*func)(const Mesh* mesh))
 }
 void Mesh::draw() const
 {
+    for (int i=0;i<textures.size();i++)
+        textures.at(i)->bind(i,GL_TEXTURE_2D).activate(shader.get(),i);
     drawFunction(this);
     Camera::instance()->linkShader(shader.get());
     GLuint modelLoc = glGetUniformLocation(shader->ID, "model");

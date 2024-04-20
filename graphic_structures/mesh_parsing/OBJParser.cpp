@@ -32,7 +32,11 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
     //ifstream loaded up to faces
     int i = 0;
     do {
-
+        if (line[0]=='u')
+        {
+            ++i;
+            continue;
+        }
         std::istringstream str{line};
         std::string f;
         Vertex v;
@@ -45,6 +49,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
             try {
                 v.position = prevertexmap.at(std::stoi(vec[0]));
                 v.UV = pretexturemap.at(std::stoi(vec[1]));
+                v.index = i;
             } catch (...) {
                 LOG_DEBUG(std::string("Failed to parse a face at ")+path+std::string(". Face: ") + line);
             }
@@ -58,7 +63,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
             }
         }
         std::getline(stream,line);
-    } while (!line.empty());
+    } while (stream.peek()!=EOF);
     LOG_DEBUG("Mesh Parsed.");
     EBO* ebo = new EBO(faces);
     
@@ -70,11 +75,43 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
         floats->push_back(vertexes->at(i).position[2]);
         floats->push_back(vertexes->at(i).UV[0]);
         floats->push_back(vertexes->at(i).UV[1]);
+        floats->push_back(vertexes->at(i).index);
     }
     VBO* vbo = new VBO(floats);
     Mesh* ptr = new Mesh(vbo,ebo,new VAO(sh),sh,GL_QUADS);
+
+    //Load references for textures into Mesh
+    loadTextures(std::ifstream(changeExtension(path)),ptr);
+    ptr->setContext([](const Mesh* mesh){
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    });
+
     LOG_ALL(std::string("Size of EBO, then VBO:" )+std::to_string(ebo->getValues().size())+std::string(", ")+std::to_string(vbo->getValues().size()));
     return ptr;
+}
+
+
+std::string OBJParser::changeExtension(std::string oldpath)
+{
+    return oldpath.substr(0,oldpath.find('.',oldpath.size()-5)) + std::string(".mtl");
+}
+void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
+{
+    std::string line;
+    std::getline(stream,line);
+    do {
+        std::istringstream str(line);
+        std::string f;
+        str >> f;
+        if (f.find("map_Kd") != std::string::npos)
+        {
+            str >> f;
+            auto vec = splitString(f,'/');
+            f = vec[vec.size()-1];
+            ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/")+f));
+        }
+        std::getline(stream,line);
+    } while (stream.peek()!=EOF);
 }
 
 
@@ -104,6 +141,9 @@ std::unordered_map<int_fast16_t,glm::vec3>& premap)
         std::getline(stream,line);
     } while (line[1]!='n');
 }
+
+
+
 
 
 void OBJParser::getUVs(std::ifstream stream,

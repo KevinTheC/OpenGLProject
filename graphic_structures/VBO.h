@@ -8,6 +8,7 @@
 typedef struct Vertex {
 	glm::vec3 position;
 	glm::vec2 UV;
+	GLfloat index;
 	bool operator==(const Vertex& other) const
 	{
 		return position==other.position&&UV==other.UV;
@@ -21,7 +22,8 @@ struct std::hash<Vertex>{
 		(std::hash<float>{}(v.position[1]) << 1) ^
 		(std::hash<float>{}(v.position[2]) << 2) ^
 		(std::hash<float>{}(v.UV[0]) << 3) ^
-		(std::hash<float>{}(v.UV[1]) << 4);
+		(std::hash<float>{}(v.UV[1]) << 4) ^
+		(std::hash<float>{}(v.index) << 5);
     }
 };
 class VBO
