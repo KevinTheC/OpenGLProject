@@ -27,6 +27,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
     std::string line;
     auto stream = std::ifstream(path);
     std::getline(stream,line);
+    
     while (line[0]!='f')
         std::getline(stream,line);
     //ifstream loaded up to faces
@@ -35,6 +36,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
         if (line[0]=='u')
         {
             ++i;
+            std::getline(stream,line);
             continue;
         }
         std::istringstream str{line};
@@ -66,7 +68,8 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
     } while (stream.peek()!=EOF);
     LOG_DEBUG("Mesh Parsed.");
     EBO* ebo = new EBO(faces);
-    
+
+
     std::vector<GLfloat>* floats = new std::vector<GLfloat>();
     for (i=0;i<vertexes->size();i++)
     {
@@ -97,6 +100,7 @@ std::string OBJParser::changeExtension(std::string oldpath)
 }
 void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
 {
+    LOG_ALL("Parsing Textures");
     std::string line;
     std::getline(stream,line);
     do {
@@ -109,6 +113,7 @@ void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
             auto vec = splitString(f,'/');
             f = vec[vec.size()-1];
             ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/")+f));
+            LOG_ALL(ptr->textures.size());
         }
         std::getline(stream,line);
     } while (stream.peek()!=EOF);

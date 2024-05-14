@@ -64,7 +64,7 @@ int main()
     #endif
      
     std::shared_ptr<Shader> sh(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
-    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/untitled.obj",sh);
+    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
     drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
