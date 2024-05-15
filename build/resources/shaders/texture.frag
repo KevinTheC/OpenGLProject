@@ -4,7 +4,7 @@ out vec4 FragColor;
 
 in vec2 texCoord;
 
-in uint texIndexInt;
+flat in int texIndexInt;
 
 uniform sampler2D tex[10];
 

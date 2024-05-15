@@ -10,11 +10,11 @@ uniform mat4 model;
 
 out vec4 gl_Position;
 out vec2 texCoord;
-out uint texIndexInt;
+flat out int texIndexInt;
 
 void main()
 {
    gl_Position = proj * view * model * vec4(aPos, 1.0);
    texCoord = aTex;
-   texIndexInt = uint(texIndex);
+   texIndexInt = int(texIndex);
 }

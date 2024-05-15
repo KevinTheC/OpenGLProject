@@ -69,6 +69,7 @@ int main()
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
     drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
 
+
     Camera::instance()->updateProjection(width, height);
     Camera::instance()->setFocus(glm::mat4(1.0f));
     Camera::instance()->linkShader(sh.get());

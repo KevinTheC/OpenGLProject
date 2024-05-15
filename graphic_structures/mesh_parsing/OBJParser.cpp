@@ -28,17 +28,20 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
     auto stream = std::ifstream(path);
     std::getline(stream,line);
     
-    while (line[0]!='f')
+    while (line[0]!='u')
         std::getline(stream,line);
     //ifstream loaded up to faces
-    int i = 0;
+
+    size_t i = 0;
+    size_t textnum = 0;
     do {
+        std::getline(stream,line);
         if (line[0]=='u')
         {
-            ++i;
-            std::getline(stream,line);
+            ++textnum;
             continue;
         }
+
         std::istringstream str{line};
         std::string f;
         Vertex v;
@@ -51,7 +54,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
             try {
                 v.position = prevertexmap.at(std::stoi(vec[0]));
                 v.UV = pretexturemap.at(std::stoi(vec[1]));
-                v.index = i;
+                v.index = textnum;
             } catch (...) {
                 LOG_DEBUG(std::string("Failed to parse a face at ")+path+std::string(". Face: ") + line);
             }
@@ -64,12 +67,10 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
                 vertexmap.emplace(v,i++);
             }
         }
-        std::getline(stream,line);
     } while (stream.peek()!=EOF);
     LOG_DEBUG("Mesh Parsed.");
     EBO* ebo = new EBO(faces);
-
-
+    LOG_ALL(faces->size());
     std::vector<GLfloat>* floats = new std::vector<GLfloat>();
     for (i=0;i<vertexes->size();i++)
     {
@@ -102,8 +103,8 @@ void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
 {
     LOG_ALL("Parsing Textures");
     std::string line;
-    std::getline(stream,line);
     do {
+        std::getline(stream,line);
         std::istringstream str(line);
         std::string f;
         str >> f;
@@ -115,7 +116,6 @@ void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
             ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/")+f));
             LOG_ALL(ptr->textures.size());
         }
-        std::getline(stream,line);
     } while (stream.peek()!=EOF);
 }
 
