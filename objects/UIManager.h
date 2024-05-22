@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "keybinds/Listeners.h"
 #include <memory>
+#include <algorithm>
 #include <unordered_map>
 #include <vector>
 #include "graphic_structures/mesh.h"
@@ -21,10 +22,11 @@ public:
 
     void handleKey(GLFWwindow* window, int key, int scancode, int action, int mods);
     void handleMouseButton(GLFWwindow* window, int button, int action, int mods);
-    void registerUI(Interface& i);
+    void registerUI(Interface* i);
+    bool detachUI(Interface* i);
     void draw();
 private:
-    std::vector<Interface> interfaces;
+    std::vector<Interface*> interfaces;
     UIManager();
     inline static std::shared_ptr<UIManager> manager;
 };

@@ -26,5 +26,5 @@ public:
     bool attemptKey(GLFWwindow* window, int key);
     bool attemptClick(GLFWwindow* window, float x, float y, int button);
     void draw() const;
-    std::vector<Interface> children;
+    std::vector<Interface*> children;
 };

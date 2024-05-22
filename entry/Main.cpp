@@ -32,7 +32,7 @@ void GLAPIENTRY debugCallback(
 int height = 900;
 int width = 800;
 
-std::vector<std::pair<Mesh*,bool>> drawables;
+extern std::vector<std::pair<Mesh*,bool>> drawables;
 
 using namespace glm;
 int main()
