@@ -106,9 +106,9 @@ float Camera::subtractFromOne(float num) {
     else
         return -1.0f - num;
 }
-void Camera::handleKey(GLFWwindow* window, int key, int scancode, int action, int mods)
+void Camera::handleKey(GLFWwindow* window, Event event, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_EQUAL)
+    if (event == Event::Zoom)
     {
         if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         {
@@ -124,9 +124,9 @@ void Camera::handleKey(GLFWwindow* window, int key, int scancode, int action, in
         }
     }
 }
-void Camera::handleDrag(GLFWwindow* window,double xnewpos, double ynewpos) {
+void Camera::handleDrag(GLFWwindow* window, double xnewpos, double ynewpos) {
     if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN)
-        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        if (InputController::instance()->getKey(window, Event::Pan) == GLFW_PRESS)
         {
             glm::vec3 var = panDirection(xpos-xnewpos,ypos-ynewpos);
             center += var * PAN_SCALAR;
@@ -134,7 +134,7 @@ void Camera::handleDrag(GLFWwindow* window,double xnewpos, double ynewpos) {
             xpos = xnewpos;
             ypos = ynewpos;
         }
-        else if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+        else if (InputController::instance()->getKey(window, Event::Rotate) == GLFW_PRESS)
         {
             yaw -= (float)glm::radians(xpos - xnewpos);
             roll += (float)glm::radians(ypos - ynewpos);

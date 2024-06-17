@@ -50,7 +50,7 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
         for (int j=0;j<4;j++)
         {
             str >> f;
-            auto vec = splitString(f,'/');
+            auto vec = MyUtil::splitString(f,'/');
             try {
                 v.position = prevertexmap.at(std::stoi(vec[0]));
                 v.UV = pretexturemap.at(std::stoi(vec[1]));
@@ -111,7 +111,7 @@ void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
         if (f.find("map_Kd") != std::string::npos)
         {
             str >> f;
-            auto vec = splitString(f,'/');
+            auto vec = MyUtil::splitString(f,'/');
             f = vec[vec.size()-1];
             ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/")+f));
             LOG_ALL(ptr->textures.size());
@@ -177,24 +177,3 @@ std::unordered_map<int_fast16_t,glm::vec2>& premap)
         std::getline(stream,line);
     } while (line[0]!='s');
 }
-
-std::vector<std::string> OBJParser::splitString(std::string str, char delimiter)
-{
-    std::vector<std::string> retvec;
-    size_t slow = 0;
-    size_t fast = 1;
-    while (fast < str.length())
-    {
-        if (str[fast] == delimiter)
-        {
-            if (fast != slow)
-                retvec.push_back(str.substr(slow, fast - slow));
-            slow = ++fast;
-        }
-        else
-            ++fast;
-    }
-    if (fast != slow)
-        retvec.push_back(str.substr(slow, fast));
-    return retvec;
-};

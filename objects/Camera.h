@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include "keybinds/InputController.h"
 #include "OpenGLIncludes.h"
 #include <array>
 #include <graphic_structures/Shader.h>
@@ -12,7 +13,6 @@
 #define screensize 3.0971f
 #define MAX_FLOAT 3.4028235E38f
 #define FOV 90.0f
-#define displayc(sargs, args) std::cout << sargs << args << "\n"
 #define PAN_SCALAR .005f
 class Camera : public DragListener, public MouseButtonListener, public ResizeListener, public MouseWheelListener, public KeyListener
 {
@@ -37,7 +37,7 @@ public:
 	void handleMouseButton(GLFWwindow* window, int button, int action, int mods);
 	void handleDrag(GLFWwindow* window, double xnewpos, double ynewpos);
 	void handleResize(GLFWwindow* window, int width, int height);
-	void handleKey(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void handleKey(GLFWwindow* window, Event event, int scancode, int action, int mods);
 private:
 	Camera();
 	glm::vec3 panDirection(float xdiff, float ydiff);

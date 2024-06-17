@@ -1,8 +1,9 @@
 #pragma once
 #include "includes.h"
+#include "Event.h"
 class KeyListener {
 public:
-	virtual void handleKey(GLFWwindow* window, int key, int scancode, int action, int mods) = 0;
+	virtual void handleKey(GLFWwindow* window, Event event, int scancode, int action, int mods) = 0;
 };
 class MouseButtonListener {
 public:
@@ -14,7 +15,7 @@ public:
 };
 class DragListener {
 public:
-	virtual void handleDrag(GLFWwindow* window,double x, double y) = 0;
+	virtual void handleDrag(GLFWwindow* window, double x, double y) = 0;
 };
 class ResizeListener {
 public:

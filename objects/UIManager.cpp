@@ -7,10 +7,10 @@ void UIManager::handleMouseButton(GLFWwindow* window, int button, int action, in
     for (auto& val : interfaces)
         val->attemptClick(window,(float)x,(float)y,button);
 }
-void UIManager::handleKey(GLFWwindow* window, int key, int scancode, int action, int mods)
+void UIManager::handleKey(GLFWwindow* window, Event e, int scancode, int action, int mods)
 {
     for (auto& val : interfaces)
-        val->attemptKey(window, key);
+        val->attemptKey(window, e);
 }
 void UIManager::registerUI(Interface* i)
 {

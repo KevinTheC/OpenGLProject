@@ -5,9 +5,9 @@ Interface::Interface(Mesh* mesh, std::vector<Area> keepAlive, std::vector<int> k
     keepAlive = keepAlive;
     killKey = killKey;
 }
-bool Interface::attemptKey(GLFWwindow* window, int key)
+bool Interface::attemptKey(GLFWwindow* window, Event event)
 {
-    if (std::count(killKey.begin(),killKey.end(),key)>0)
+    if (std::count(killKey.begin(),killKey.end(),event)>0)
         return true;
 }
 bool Interface::attemptClick(GLFWwindow* window, float x, float y, int button)
@@ -20,6 +20,6 @@ bool Interface::attemptClick(GLFWwindow* window, float x, float y, int button)
 void Interface::draw() const
 {
     for (const auto& child : children)
-        child.draw();
+        child->draw();
     mesh->draw();
 }

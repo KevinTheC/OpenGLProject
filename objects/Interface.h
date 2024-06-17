@@ -23,7 +23,7 @@ private:
 public:
     Interface(Mesh* mesh, std::vector<Area> keepAlive, std::vector<int> killKey);
     std::string name;
-    bool attemptKey(GLFWwindow* window, int key);
+    bool attemptKey(GLFWwindow* window, Event event);
     bool attemptClick(GLFWwindow* window, float x, float y, int button);
     void draw() const;
     std::vector<Interface*> children;

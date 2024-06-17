@@ -1,16 +1,43 @@
 #pragma once
 #include <type_traits>
+#include "utils/Util.h"
 #include "includes.h"
 #include <vector>
+#include <stdlib.h>
+#include <iostream>
+#include <unordered_map>
+#include <memory>
+#include <string>
+#include <fstream>
+#include "Event.h"
 #include "keybinds/Listeners.h"
 class InputController
 {
+public:
+    static std::shared_ptr<InputController> instance()
+	{
+		if (manager.get() == nullptr)
+			manager = std::shared_ptr<InputController>(new InputController);
+		return manager;
+	}
+	InputController(InputController const&) = delete;
+	InputController& operator=(InputController const&) = delete;
+    InputController();
+	bool loadCustom();
+	void loadDefault();
+	void writeBinds();
+	void bind(const int,Event);
+	int getKey(GLFWwindow*, Event);
 private:
-	static std::vector<DragListener*> draggers;
-	static std::vector<ResizeListener*> resizers;
-	static std::vector<MouseButtonListener*> mbListeners;
-	static std::vector<MouseWheelListener*> mwListeners;
-	static std::vector<KeyListener*> kListeners;
+	std::unordered_map<int,Event> bindingMap;
+public:
+    inline static std::shared_ptr<InputController> manager;
+
+	inline static std::vector<DragListener*> draggers;
+	inline static std::vector<ResizeListener*> resizers;
+	inline static std::vector<MouseButtonListener*> mbListeners;
+	inline static std::vector<MouseWheelListener*> mwListeners;
+	inline static std::vector<KeyListener*> kListeners;
 	template <typename T>
 	static void remove(T* t, std::vector<T*> vec) {
 		for (int i = 0; i < vec.size(); i++)
@@ -67,7 +94,7 @@ public:
 	static void GLFWkeyCB(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		for (KeyListener* kl : kListeners)
-			kl->handleKey(window,key,scancode,action,mods);
+			kl->handleKey(window,(Event)instance()->bindingMap.at(key),scancode,action,mods);
 	}
 	static void GLFWmouseWheelCB(GLFWwindow* window, double xoffset, double yoffset)
 	{
@@ -75,8 +102,3 @@ public:
 			mw->handleMouseWheel(window, xoffset, yoffset);
 	}
 };
-std::vector<DragListener*> InputController::draggers;
-std::vector<ResizeListener*> InputController::resizers;
-std::vector<MouseButtonListener*> InputController::mbListeners;
-std::vector<MouseWheelListener*> InputController::mwListeners;
-std::vector<KeyListener*> InputController::kListeners;
