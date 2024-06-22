@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include "graphic_structures/mesh.h"
+#include "graphic_structures/mesh_parsing/MeshParser.h"
 #include "Interface.h"
 //UI manager should hold a reference to each mesh displayed, as well as an area on the screen where a click will destroy the menu.
 //this can be done by holding a vector of areas, checking each area and then if the match is found 

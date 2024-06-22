@@ -21,6 +21,7 @@ void UIManager::draw()
     for (auto& val : interfaces)
         val->draw();
 }
+//calls for destruction of interface's children, then finds interface and destroys it
 bool UIManager::detachUI(Interface* i)
 {
     for (auto& val : i->children)

@@ -17,10 +17,11 @@ struct Area
 };
 class Interface {
 private:
-    Mesh* mesh;
+    //Mesh* mesh;
     std::vector<Area> keepAlive;
     std::vector<int> killKey;
 public:
+    Mesh* mesh;
     Interface(Mesh* mesh, std::vector<Area> keepAlive, std::vector<int> killKey);
     std::string name;
     bool attemptKey(GLFWwindow* window, Event event);

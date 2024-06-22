@@ -19,7 +19,7 @@ bool Interface::attemptClick(GLFWwindow* window, float x, float y, int button)
 }
 void Interface::draw() const
 {
-    for (const auto& child : children)
-        child->draw();
+    //for (const auto& child : children)
+    //    child->draw();
     mesh->draw();
 }

@@ -28,6 +28,7 @@ public:
 	void writeBinds();
 	void bind(const int,Event);
 	int getKey(GLFWwindow*, Event);
+	Event getBinding()
 private:
 	std::unordered_map<int,Event> bindingMap;
 public:

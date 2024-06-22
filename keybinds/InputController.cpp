@@ -23,12 +23,14 @@ bool InputController::loadCustom()
     }
     return true;
 }
+//USING A KEY NOT BOUND IS THE PROBLEM
 void InputController::loadDefault()
 {
     bindingMap.clear();
     bindingMap.emplace(GLFW_KEY_EQUAL, Zoom);
     bindingMap.emplace(GLFW_KEY_LEFT_CONTROL, Pan);
     bindingMap.emplace(GLFW_KEY_LEFT_ALT, Rotate);
+    bindingMap.emplace(GLFW_KEY_9, Test);
 }
 void InputController::writeBinds()
 {

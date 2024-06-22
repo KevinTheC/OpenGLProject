@@ -67,14 +67,17 @@ int main()
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
+
+    std::shared_ptr<Shader> sh2(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
+    Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh2);
     drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
+    drawables.push_back(std::pair<Mesh*,bool>(mesh2,true));
 
 
     Camera::instance()->updateProjection(width, height);
     Camera::instance()->setFocus(glm::mat4(1.0f));
     Camera::instance()->linkShader(sh.get());
 
-   
 
 
     glEnable(GL_DEPTH_TEST);
@@ -87,11 +90,11 @@ int main()
     glfwSetKeyCallback(window, InputController::GLFWkeyCB);
     glfwSetScrollCallback(window, InputController::GLFWmouseWheelCB);
 
+    
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
         for (const auto& val : drawables)
             if (val.second)
                 val.first->draw();
