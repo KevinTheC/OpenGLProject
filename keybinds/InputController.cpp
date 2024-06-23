@@ -64,3 +64,9 @@ int InputController::getKey(GLFWwindow* window, Event e)
     }
     return -1;
 }
+Event InputController::getBinding(int glfwkey)
+{
+    if (bindingMap.find(glfwkey)==bindingMap.end())
+        return Unbound;
+    return bindingMap.at(glfwkey);
+}

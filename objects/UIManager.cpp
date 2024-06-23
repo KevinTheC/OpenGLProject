@@ -9,8 +9,14 @@ void UIManager::handleMouseButton(GLFWwindow* window, int button, int action, in
 }
 void UIManager::handleKey(GLFWwindow* window, Event e, int scancode, int action, int mods)
 {
-    for (auto& val : interfaces)
+    if (e == Test)
+    {
+        LOG_ALL("Test");
+    }
+    for (const auto& val : interfaces)
+    //this line is bugging
         val->attemptKey(window, e);
+    LOG_ALL("Dispatched KeyEvent to interfaces");
 }
 void UIManager::registerUI(Interface* i)
 {
@@ -18,7 +24,7 @@ void UIManager::registerUI(Interface* i)
 }
 void UIManager::draw()
 {
-    for (auto& val : interfaces)
+    for (const auto& val : interfaces)
         val->draw();
 }
 //calls for destruction of interface's children, then finds interface and destroys it

@@ -68,10 +68,7 @@ int main()
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
 
-    std::shared_ptr<Shader> sh2(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
-    Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh2);
-    drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
-    drawables.push_back(std::pair<Mesh*,bool>(mesh2,true));
+    //drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
 
 
     Camera::instance()->updateProjection(width, height);
@@ -79,6 +76,10 @@ int main()
     Camera::instance()->linkShader(sh.get());
 
 
+    //Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
+    UIManager::instance()->registerUI(new Interface(mesh,std::vector<Area>(),std::vector<int>({GLFW_KEY_1})));
+
+    //drawables.push_back(std::pair<Mesh*,bool>(mesh2,true));
 
     glEnable(GL_DEPTH_TEST);
 
@@ -90,17 +91,23 @@ int main()
     glfwSetKeyCallback(window, InputController::GLFWkeyCB);
     glfwSetScrollCallback(window, InputController::GLFWmouseWheelCB);
 
-    
-    while (!glfwWindowShouldClose(window))
+    try
     {
-        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        for (const auto& val : drawables)
-            if (val.second)
-                val.first->draw();
-        UIManager::instance()->draw();
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        while (!glfwWindowShouldClose(window))
+        {
+            glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            for (const auto& val : drawables)
+                if (val.second)
+                    val.first->draw();
+            UIManager::instance()->draw();
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+    } catch (const std::exception& e) {
+        LOG_ALERT(std::string("Crashed! Exception thrown: ")+e.what());
+    } catch (...) {
+        LOG_ALERT("Crashed! Unknown Exception thrown");
     }
     sh->erase();
     glfwTerminate();

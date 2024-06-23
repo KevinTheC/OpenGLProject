@@ -28,7 +28,7 @@ public:
 	void writeBinds();
 	void bind(const int,Event);
 	int getKey(GLFWwindow*, Event);
-	Event getBinding()
+	Event getBinding(int);
 private:
 	std::unordered_map<int,Event> bindingMap;
 public:
@@ -95,7 +95,7 @@ public:
 	static void GLFWkeyCB(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		for (KeyListener* kl : kListeners)
-			kl->handleKey(window,(Event)instance()->bindingMap.at(key),scancode,action,mods);
+			kl->handleKey(window,instance()->getBinding(key),scancode,action,mods);
 	}
 	static void GLFWmouseWheelCB(GLFWwindow* window, double xoffset, double yoffset)
 	{

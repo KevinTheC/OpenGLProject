@@ -1,5 +1,6 @@
 *.o
 *.lnk
+*.url
 .vscode
 *.log
 *.exe
