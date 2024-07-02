@@ -84,6 +84,8 @@ void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int m
 void Camera::handleMouseWheel(GLFWwindow* window, double xoffset, double yoffset)
 {
     total += yoffset * PAN_SCALAR * -1 * 10;
+    if (total < 0)
+        total = 0;
     refresh();
 }
 glm::vec3 Camera::panDirection(float xdiff, float ydiff)

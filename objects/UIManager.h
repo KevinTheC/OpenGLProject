@@ -27,7 +27,7 @@ public:
     bool detachUI(Interface* i);
     void draw();
 private:
-    std::vector<Interface*> interfaces;
+    std::vector<std::pair<Interface*,bool>> interfaces;
     UIManager();
     inline static std::shared_ptr<UIManager> manager;
 };

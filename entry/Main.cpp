@@ -77,7 +77,7 @@ int main()
 
 
     //Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
-    UIManager::instance()->registerUI(new Interface(mesh,std::vector<Area>(),std::vector<int>({GLFW_KEY_1})));
+    UIManager::instance()->registerUI(new Interface(mesh,std::vector<Area>(),std::vector<Event>({Test2})));
 
     //drawables.push_back(std::pair<Mesh*,bool>(mesh2,true));
 

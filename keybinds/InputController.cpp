@@ -21,6 +21,7 @@ bool InputController::loadCustom()
             return false;
         }
     }
+    bindingMap.emplace(GLFW_KEY_ESCAPE, Escape);
     return true;
 }
 //USING A KEY NOT BOUND IS THE PROBLEM
@@ -31,6 +32,7 @@ void InputController::loadDefault()
     bindingMap.emplace(GLFW_KEY_LEFT_CONTROL, Pan);
     bindingMap.emplace(GLFW_KEY_LEFT_ALT, Rotate);
     bindingMap.emplace(GLFW_KEY_9, Test);
+    bindingMap.emplace(GLFW_KEY_ESCAPE, Escape);
 }
 void InputController::writeBinds()
 {
