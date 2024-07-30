@@ -8,6 +8,7 @@ class EBO
 public:
 	GLuint ID;
 	EBO(std::vector<GLuint>* vec);
+	~EBO();
 	void draw(int gl_geometry);
 	void bind();
 	void unbind();

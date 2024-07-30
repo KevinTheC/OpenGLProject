@@ -9,8 +9,13 @@ Mesh::Mesh(VBO* vbparam,
     model = glm::mat4(1.0f);
     shader->activate();
     vao->linkAttribs(shader,vbo,ebo);
-    LOG_ALL(this);
 };
+Mesh::~Mesh()
+{
+    delete(vbo);
+    delete(ebo);
+    delete(vao);
+}
 const glm::mat4& Mesh::getModel()
 {
     return model;

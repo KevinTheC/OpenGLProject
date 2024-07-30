@@ -31,6 +31,7 @@ class VBO
 public:
 	GLuint ID;
 	VBO(std::vector<GLfloat>*);
+	~VBO();
 	const std::vector<GLfloat>& getValues();
 	void bind();
 	void unbind();

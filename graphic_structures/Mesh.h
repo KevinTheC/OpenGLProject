@@ -30,6 +30,7 @@ public:
 	VAO*,
 	std::shared_ptr<Shader>,
 	uint_fast8_t);
+	~Mesh();
 	std::shared_ptr<Shader> shader;
 	
 	std::vector<Texture*> textures;
