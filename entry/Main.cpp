@@ -7,6 +7,7 @@
 #include "OpenGLIncludes.h"
 #include "objects/Camera.h"
 #include "objects/UIManager.h"
+#include "graphic_structures/fonts/test.h"
 #include "keybinds/InputController.h"
 #include "graphic_structures/mesh_parsing/MeshParser.h"
 #include "graphic_structures/Mesh.h"
@@ -62,13 +63,15 @@ int main()
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
-     
+    
     std::shared_ptr<Shader> sh(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
+    std::shared_ptr<Shader> textshader(new Shader("./resources/shaders/coloredText.vert","./resources/shaders/coloredText.frag"));
+    TextMesh* text = TextureAtlas::buildText(textshader,std::string("Hello World"), std::array<GLfloat,3>{1.0f,0.0f,0.0f});
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
 
-    //drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
+    drawables.push_back(std::pair<Mesh*,bool>(text,true));
 
 
     Camera::instance()->updateProjection(width, height);
@@ -82,6 +85,7 @@ int main()
     //drawables.push_back(std::pair<Mesh*,bool>(mesh2,true));
 
     glEnable(GL_DEPTH_TEST);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     InputController::addObserver(Camera::instance().get());
     InputController::addObserver(UIManager::instance().get());

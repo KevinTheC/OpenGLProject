@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -fdiagnostics-color=always -g -Wno-unused-function -Wno-unused-variable
+CXXFLAGS = -std=c++17 -Wall -Wextra -fdiagnostics-color=always -g -Wno-unused-function -Wno-unused-variable -Wno-unused-parameter
 #change to whatever the includes are
 INCLUDES = -Iinclude -I"$(shell pwd)" -Iinclude/boost_1_82_0
 LIBSDIRS = -L./lib -L"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x64"

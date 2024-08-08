@@ -86,9 +86,6 @@ Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
 
     //Load references for textures into Mesh
     loadTextures(std::ifstream(changeExtension(path)),ptr);
-    ptr->setContext([](const Mesh* mesh){
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    });
 
     LOG_ALL(std::string("Size of EBO, then VBO:" )+std::to_string(ebo->getValues().size())+std::string(", ")+std::to_string(vbo->getValues().size()));
     return ptr;
