@@ -44,9 +44,9 @@ void Mesh::rotate(GLfloat angle, glm::vec3 vect)
 {
     model = glm::rotate(model,angle,vect);
 }
-void Mesh::setContext(void(*func)(const Mesh* mesh))
+void Mesh::setContext() const
 {
-    drawFunction = func;
+    
 }
 void Mesh::draw() const
 {
@@ -55,8 +55,8 @@ void Mesh::draw() const
         textures.at(i)->bind(i,GL_TEXTURE_2D);
         textures.at(i)->activate(shader.get(),i);
     }
-    drawFunction(this);
     Camera::instance()->linkShader(shader.get());
+    setContext();
     GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	vao->bind();

@@ -42,6 +42,6 @@ public:
 	void translate(glm::vec3);
 	void rotate(GLfloat, glm::vec3);
 
-	void setContext(void(*func)(const Mesh* mesh));
+	virtual void setContext() const;
 	void draw() const;
 };
