@@ -4,4 +4,5 @@
 #include <string>
 namespace MyUtil{
     std::vector<std::string> splitString(std::string, char);
+    std::string arrayifier(std::vector<std::string>, bool);
 }

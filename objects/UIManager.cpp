@@ -19,7 +19,8 @@ void UIManager::handleKey(GLFWwindow* window, Event e, int scancode, int action,
         std::shared_ptr<Shader> sh(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
         registerUI(new Interface(MeshParser::parseMesh("./resources/meshes/test.obj",sh),std::vector<Area>(),std::vector<Event>({Test2})));
     }
-    interfaces.back().first->attemptKey(window, e);
+    if (!interfaces.empty())
+        interfaces.back().first->attemptKey(window, e);
 }
 void UIManager::registerUI(Interface* i)
 {

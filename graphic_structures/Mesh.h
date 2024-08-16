@@ -11,19 +11,19 @@
 #include "Texture.h"
 #include "EBO.h"
 #include "objects/Camera.h"
+#include "utils/Util.h"
 #include <stdint.h>
 #include "Shader.h"
 #include <array>
 #include <stb_image.h>
 class Mesh
 {
-private:
+protected:
 	VBO* vbo;
 	EBO* ebo;
 	VAO* vao;
 	uint_fast8_t geometry;
 	glm::mat4 model;
-	void(*drawFunction)(const Mesh*) = [](const Mesh*) {};
 public:
 	Mesh(VBO*,
 	EBO*, 
@@ -34,14 +34,14 @@ public:
 	std::shared_ptr<Shader> shader;
 	
 	std::vector<Texture*> textures;
-	const glm::mat4& getModel();
-    const VBO* getVBO();
-    EBO* getEBO();
-	const std::shared_ptr<Shader> getShader();
+	const glm::mat4& getModel() const;
+    VBO* getVBO() const;
+    EBO* getEBO() const;
+	std::shared_ptr<Shader> getShader() const;
 	void scale(glm::vec3);
 	void translate(glm::vec3);
 	void rotate(GLfloat, glm::vec3);
 
-	virtual void setContext() const;
-	void draw() const;
+	virtual void draw() const;
+	std::string toString() const;
 };

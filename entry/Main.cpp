@@ -12,7 +12,6 @@
 #include "graphic_structures/mesh_parsing/MeshParser.h"
 #include "graphic_structures/Mesh.h"
 #include "graphic_structures/Texture.h"
-//#define BUILD_TEST
 
 #ifdef LOGGING_DEBUG
 void GLAPIENTRY debugCallback(
@@ -29,7 +28,6 @@ void GLAPIENTRY debugCallback(
 
 
 #define gray .5f, .5f, .5f,
-#ifndef BUILD_TEST
 int height = 900;
 int width = 800;
 
@@ -66,13 +64,19 @@ int main()
     
     std::shared_ptr<Shader> sh(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
     std::shared_ptr<Shader> textshader(new Shader("./resources/shaders/coloredText.vert","./resources/shaders/coloredText.frag"));
-    TextMesh* text = TextureAtlas::buildText(textshader,std::string("Hello World"), std::array<GLfloat,3>{1.0f,0.0f,0.0f});
+    std::shared_ptr<Shader> testshader(new Shader("./resources/shaders/test.vert","./resources/shaders/test.frag"));
+    TextMesh* text = TextureAtlas::buildText(textshader,std::string("HELLO WORLDD"), std::array<GLfloat, 3>{0.0f,0.0f,0.4f});
+    text->setOffset(std::array<GLfloat, 3>{0.0f,0.0f,0.0f});
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
+    
+    LOG_ALL(Logger::toString(*text));
+
+
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
-
+    
+    drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
     drawables.push_back(std::pair<Mesh*,bool>(text,true));
-
 
     Camera::instance()->updateProjection(width, height);
     Camera::instance()->setFocus(glm::mat4(1.0f));
@@ -80,12 +84,14 @@ int main()
 
 
     //Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
-    UIManager::instance()->registerUI(new Interface(mesh,std::vector<Area>(),std::vector<Event>({Test2})));
+    //UIManager::instance()->registerUI(new Interface(mesh,std::vector<Area>(),std::vector<Event>({Test2})));
 
     //drawables.push_back(std::pair<Mesh*,bool>(mesh2,true));
 
     glEnable(GL_DEPTH_TEST);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable( GL_BLEND );
 
     InputController::addObserver(Camera::instance().get());
     InputController::addObserver(UIManager::instance().get());
@@ -117,52 +123,3 @@ int main()
     glfwTerminate();
     return 0;
 }
-#endif
-#ifdef BUILD_TEST
-int main()
-{
-    Logger::initLogger();
-
-    GLFWwindow* window;
-    if (!glfwInit())
-    {
-        Logger::log << "GLFW failed to initialize." << std::endl;
-        return -1;
-    }
-    window = glfwCreateWindow(800, 800, "Model", NULL, NULL);
-    if (!window)
-    {
-        Logger::log << "GLFW failed to create a window." << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    if (glewInit() != GLEW_OK) {
-        Logger::log << "glew failed to initialize." << std::endl;
-        return -1;
-    }
-    glViewport(0, 0, 800, 800);
-
-
-    std::shared_ptr<Shader> sh3(new Shader("./resources/shaders/original.vert","./resources/shaders/original.frag"));       
-    std::shared_ptr<Shader> sh(new Shader("./resources/shaders/test.vert","./resources/shaders/color.frag"));
-    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/untitled.obj",sh3);
-
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	while (!glfwWindowShouldClose(window))
-	{
-		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-        mesh->draw();
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-	sh3->erase();
-	// Delete window before ending the program
-	glfwDestroyWindow(window);
-	// Terminate GLFW before ending the program
-	glfwTerminate();
-	return 0;
-}
-#endif

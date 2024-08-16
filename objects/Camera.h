@@ -32,6 +32,7 @@ public:
 	const glm::mat4& getProj();
 	const glm::mat4& getView();
 	
+	glm::mat4& getOrtho();
 
 	void handleMouseWheel(GLFWwindow* window, double xoffset, double yoffset);
 	void handleMouseButton(GLFWwindow* window, int button, int action, int mods);
@@ -54,6 +55,7 @@ private:
 
 	int width;
 	int height;
+	glm::mat4 ortho;
 	glm::mat4 focus;
 	float total;
 	float roll;

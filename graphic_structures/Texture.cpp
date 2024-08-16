@@ -2,7 +2,7 @@
 Texture::Texture(std::string path)
 {
     int width,height,colch;
-    unsigned char* bytes = stbi_load(path.c_str(), &width, &height, &colch, 0);
+    unsigned char* bytes = stbi_load(path.c_str(), &width, &height, &colch, STBI_rgb_alpha);
     if ((uintptr_t)bytes == (uintptr_t)"can't fopen" || (uintptr_t)bytes == (uintptr_t)"Unable to open file" || (uintptr_t)bytes == 0)
         LOG_ALERT(std::string("No texture found at ")+path);
     glGenTextures(1, &ID);
@@ -12,12 +12,10 @@ Texture::Texture(std::string path)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    //
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, bytes);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
 
     stbi_image_free(bytes);
     glGenerateMipmap(GL_TEXTURE_2D);
-    //clear(GL_TEXTURE0);
 }
 Texture& Texture::getTexture(std::string path)
 {

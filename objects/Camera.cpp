@@ -26,6 +26,7 @@ void Camera::linkShader(Shader* sh)
 void Camera::updateProjection(int w, int h)
 {
     proj = glm::perspective(glm::radians(FOV), (float)(h * 1.0 / w * 1.0), 0.1f, 100.0f);
+    ortho = glm::ortho(0.0f, (float)width, 0.0f, (float)height);
     glViewport(0, 0, w, h);
     width = w;
     height = h;
@@ -161,4 +162,8 @@ void Camera::refresh()
     viewpoint[0] += xperc * temp;
 
     view = glm::lookAt(viewpoint, center, glm::vec3(0.0f, 1.0f, 0.0f));
+}
+glm::mat4& Camera::getOrtho()
+{
+    return ortho;
 }

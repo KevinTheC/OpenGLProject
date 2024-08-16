@@ -16,19 +16,19 @@ Mesh::~Mesh()
     delete(ebo);
     delete(vao);
 }
-const glm::mat4& Mesh::getModel()
+const glm::mat4& Mesh::getModel() const
 {
     return model;
 }
-const VBO* Mesh::getVBO()
+VBO* Mesh::getVBO() const
 {
     return vbo;
 }
-EBO* Mesh::getEBO()
+EBO* Mesh::getEBO() const 
 {
     return ebo;
 }
-const std::shared_ptr<Shader> Mesh::getShader()
+std::shared_ptr<Shader> Mesh::getShader() const
 {
     return shader;
 }
@@ -44,10 +44,6 @@ void Mesh::rotate(GLfloat angle, glm::vec3 vect)
 {
     model = glm::rotate(model,angle,vect);
 }
-void Mesh::setContext() const
-{
-    
-}
 void Mesh::draw() const
 {
     for (int i=0;i<textures.size();i++)
@@ -56,10 +52,59 @@ void Mesh::draw() const
         textures.at(i)->activate(shader.get(),i);
     }
     Camera::instance()->linkShader(shader.get());
-    setContext();
     GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	vao->bind();
 	ebo->draw(geometry);
 	vao->unbind();
+}
+
+std::string Mesh::toString() const
+{
+	std::string vbostr;
+	std::string matrixstr;
+	std::string ebostr;
+	std::vector<std::string> outer;
+	size_t stride = 1;
+	if (geometry == GL_QUADS)
+		stride = 4;
+	if (geometry == GL_TRIANGLES)
+		stride = 3;
+	if (geometry == GL_TRIANGLES||geometry == GL_QUADS)
+	{
+		for (size_t i = 0; i < ebo->getValues().size()/stride; ++i)
+		{
+			std::vector<std::string> inner;
+			for (size_t j = 0; j < stride; ++j)
+			{
+				inner.push_back(std::to_string(ebo->getValues()[i*stride+j]));
+			}
+			outer.push_back(MyUtil::arrayifier(inner,false));
+		}
+		ebostr = MyUtil::arrayifier(outer,true);
+	} else
+	{
+		for (size_t i = 0; i < ebo->getValues().size(); ++i)
+			outer.push_back(std::to_string(ebo->getValues()[i]));
+		ebostr = MyUtil::arrayifier(outer,false);
+	}
+	outer.clear();
+	stride = 0;
+	for (auto attrib : shader->getAttribs())
+		stride += attrib;
+	for (size_t i = 0; i < vbo->getValues().size()/stride; ++i)
+	{
+		std::vector<std::string> inner;
+		for (size_t j = 0; j < stride; ++j)
+		{
+			inner.push_back(std::to_string(vbo->getValues()[i*stride+j]));
+		}
+		outer.push_back(MyUtil::arrayifier(inner,false));
+	}
+	vbostr = MyUtil::arrayifier(outer,true);
+	matrixstr = "[" + std::to_string(model[0][0]) + ", " + std::to_string(model[0][1]) + ", " + std::to_string(model[0][2]) + ", " + std::to_string(model[0][3]) + ",\n";
+	matrixstr +=  std::to_string(model[1][0]) + ", " + std::to_string(model[1][1]) + ", " + std::to_string(model[1][2]) + ", " + std::to_string(model[1][3]) + ",\n";
+	matrixstr +=  std::to_string(model[2][0]) + ", " + std::to_string(model[2][1]) + ", " + std::to_string(model[2][2]) + ", " + std::to_string(model[2][3]) + ",\n";
+	matrixstr +=  std::to_string(model[3][0]) + ", " + std::to_string(model[3][1]) + ", " + std::to_string(model[3][2]) + ", " + std::to_string(model[3][3]) + "]";
+	return "VBO: " + vbostr + "\nEBO: " + ebostr + "\nModel Matrix: " + matrixstr;
 }
