@@ -62,9 +62,8 @@ int main()
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
     
-    std::shared_ptr<Shader> sh(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
-    std::shared_ptr<Shader> textshader(new Shader("./resources/shaders/coloredText.vert","./resources/shaders/coloredText.frag"));
-    std::shared_ptr<Shader> testshader(new Shader("./resources/shaders/test.vert","./resources/shaders/test.frag"));
+    std::shared_ptr<Shader> sh = Shader::getShader(std::string("./resources/shaders/texture"));
+    std::shared_ptr<Shader> textshader = Shader::getShader(std::string("./resources/shaders/coloredText"));
     TextMesh* text = TextureAtlas::buildText(textshader,std::string("HELLO WORLDD"), std::array<GLfloat, 3>{0.0f,0.0f,0.4f});
     text->setOffset(std::array<GLfloat, 3>{0.0f,0.0f,0.0f});
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);

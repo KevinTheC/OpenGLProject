@@ -1,5 +1,5 @@
 #include "Shader.h"
-std::string get_file_contents(const char* filename)
+std::string get_file_contents(std::string filename)
 {
 	std::ifstream in(filename, std::ios::binary);
 	if (in)
@@ -15,10 +15,10 @@ std::string get_file_contents(const char* filename)
 	throw(errno);
 }
 GLuint Shader::current = 0;
-Shader::Shader(const char* vertexFile, const char* fragmentFile)
+Shader::Shader(std::string file)
 {
-	std::string vertexCode = get_file_contents(vertexFile);
-	std::string fragmentCode = get_file_contents(fragmentFile);
+	std::string vertexCode = get_file_contents(file + ".vert");
+	std::string fragmentCode = get_file_contents(file + ".frag");
 
 	auto str = vertexCode.substr(vertexCode.find('/') + 2, (vertexCode.find('l') - 2) - (vertexCode.find('/') + 2));
 	int loc = 0;
@@ -51,7 +51,7 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
 	//delete the objects, already exist in the program
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	LOG_DEBUG(std::string("Shaders parsed at: ")+std::string(vertexFile)+std::string(" ,")+std::string(fragmentFile));
+	LOG_DEBUG(std::string("Shaders parsed at: ")+std::string(file));
 }
 
 
@@ -96,4 +96,11 @@ void Shader::compileError(unsigned int shader, const char* type)
 std::vector<int> Shader::getAttribs()
 {
 	return attribs;
+}
+std::shared_ptr<Shader> Shader::getShader(std::string file)
+{
+	if (map.find(file)!=map.end())
+        return std::shared_ptr<Shader>(&(map.at(file)));
+    map.emplace(file,Shader(file));
+    return std::shared_ptr<Shader>(&(map.at(file)));
 }

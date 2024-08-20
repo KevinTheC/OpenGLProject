@@ -16,8 +16,8 @@ void UIManager::handleKey(GLFWwindow* window, Event e, int scancode, int action,
     }
     else if (e == Test)
     {
-        std::shared_ptr<Shader> sh(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
-        registerUI(new Interface(MeshParser::parseMesh("./resources/meshes/test.obj",sh),std::vector<Area>(),std::vector<Event>({Test2})));
+        // std::shared_ptr<Shader> sh(new Shader("./resources/shaders/texture.vert","./resources/shaders/texture.frag"));
+        // registerUI(new Interface(MeshParser::parseMesh("./resources/meshes/test.obj",sh),std::vector<Area>(),std::vector<Event>({Test2})));
     }
     if (!interfaces.empty())
         interfaces.back().first->attemptKey(window, e);
