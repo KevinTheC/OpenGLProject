@@ -7,7 +7,7 @@
 #include "OpenGLIncludes.h"
 #include "objects/Camera.h"
 #include "objects/UIManager.h"
-#include "graphic_structures/fonts/test.h"
+#include "graphic_structures/fonts/FontTextureAtlas.h"
 #include "keybinds/InputController.h"
 #include "graphic_structures/mesh_parsing/MeshParser.h"
 #include "graphic_structures/Mesh.h"
@@ -27,7 +27,6 @@ void GLAPIENTRY debugCallback(
 #endif
 
 
-#define gray .5f, .5f, .5f,
 int height = 900;
 int width = 800;
 
@@ -63,8 +62,7 @@ int main()
     #endif
     
     std::shared_ptr<Shader> sh = Shader::getShader(std::string("./resources/shaders/texture"));
-    std::shared_ptr<Shader> textshader = Shader::getShader(std::string("./resources/shaders/coloredText"));
-    TextMesh* text = TextureAtlas::buildText(textshader,std::string("HELLO WORLDD"), std::array<GLfloat, 3>{0.0f,0.0f,0.4f});
+    TextMesh* text = FontTextureAtlas::buildText("HELLO WORLDD", std::array<GLfloat, 3>{0.0f,0.0f,0.4f});
     text->setOffset(std::array<GLfloat, 3>{0.0f,0.0f,0.0f});
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
     

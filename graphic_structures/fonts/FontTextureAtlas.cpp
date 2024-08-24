@@ -1,5 +1,5 @@
-#include "TextureAltas.h"
-TextMesh* TextureAtlas::buildText(std::shared_ptr<Shader> shader, std::string text, std::array<GLfloat, 3> rgb)
+#include "FontTextureAtlas.h"
+TextMesh* FontTextureAtlas::buildText(const std::string& text, std::array<GLfloat, 3> rgb)
 {
     std::vector<GLuint>* faces = new std::vector<GLuint>();
     std::vector<GLfloat>* vertexes = new std::vector<GLfloat>();
@@ -18,7 +18,6 @@ TextMesh* TextureAtlas::buildText(std::shared_ptr<Shader> shader, std::string te
         {
             vertexes->push_back(XYZs[j]);
             vertexes->push_back(XYZs[j+1]);
-            vertexes->push_back(0.0f);
             vertexes->push_back(UVs[j]);
             vertexes->push_back(UVs[j+1]);
         }
@@ -31,12 +30,13 @@ TextMesh* TextureAtlas::buildText(std::shared_ptr<Shader> shader, std::string te
         faces->push_back(i+3);
         faces->push_back(i+1);
     }
+    std::shared_ptr<Shader> shader = Shader::getShader(std::string("./resources/shaders/coloredText"));
     TextMesh* ptr = new TextMesh(new VBO(vertexes),new EBO(faces),new VAO(shader),shader,GL_QUADS);
     ptr->setColor(rgb);
     ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/fonts/consolasTransparent.png")));
     return ptr;
 }
-std::array<GLfloat, 8> TextureAtlas::UVTable(char c)
+std::array<GLfloat, 8> FontTextureAtlas::UVTable(char c)
 {
     int index = c-'A';
     constexpr float xmultiplier = 34.0f/432.0f;

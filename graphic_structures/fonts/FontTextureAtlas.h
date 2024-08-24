@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <vector>
 #include "TextMesh.h"
-namespace TextureAtlas
+namespace FontTextureAtlas
 {
-    TextMesh* buildText(std::shared_ptr<Shader>, std::string, std::array<GLfloat, 3>);
+    TextMesh* buildText(const std::string&, std::array<GLfloat, 3>);
     std::array<GLfloat, 8> UVTable(char);
 };
