@@ -34,6 +34,7 @@ public:
 	std::shared_ptr<Shader> shader;
 	std::vector<Texture*> textures;
 	bool orthographic;
+	bool transparent;
 	
 	const glm::mat4& getModel() const;
     VBO* getVBO() const;
@@ -42,7 +43,6 @@ public:
 	void scale(glm::vec3);
 	void translate(glm::vec3);
 	void rotate(GLfloat, glm::vec3);
-
 	virtual void draw() const;
 	std::string toString() const;
 };

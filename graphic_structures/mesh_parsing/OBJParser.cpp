@@ -1,6 +1,7 @@
 #include "OBJParser.h"
-Mesh* OBJParser::parse(std::string path, std::shared_ptr<Shader> sh)
+Mesh* OBJParser::parse(std::string path)
 {
+    std::shared_ptr<Shader> sh = Shader::getShader("./resources/shaders/texture");
     LOG_DEBUG(std::string("Parsing a mesh at: ")+path);
 
     std::vector<glm::vec3> prevertex;
@@ -111,7 +112,6 @@ void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
             auto vec = MyUtil::splitString(f,'/');
             f = vec[vec.size()-1];
             ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/")+f));
-            LOG_ALL(ptr->textures.size());
         }
     } while (stream.peek()!=EOF);
 }

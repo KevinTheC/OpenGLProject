@@ -26,7 +26,6 @@ void Camera::linkShader(Shader* sh)
 void Camera::updateProjection(int w, int h)
 {
     proj = glm::perspective(glm::radians(FOV), (float)(h * 1.0 / w * 1.0), 0.1f, 100.0f);
-    ortho = glm::ortho(0.0f, (float)width, 0.0f, (float)height);
     glViewport(0, 0, w, h);
     width = w;
     height = h;
@@ -58,7 +57,8 @@ void Camera::handleResize(GLFWwindow* window,int w, int h)
 {
     camera->updateProjection(w,h);
 }
-void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int mods) {
+void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int mods) 
+{
     glfwGetCursorPos(window, &xpos, &ypos);
     if (button == GLFW_MOUSE_BUTTON_1)
         if (action == GLFW_PRESS) {
@@ -68,7 +68,7 @@ void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int m
         else
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     //UNUSED
-    else if (button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS && GLFW_PRESS == glfwGetKey(window,GLFW_KEY_LEFT_CONTROL))
+    else if (button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS && InputController::instance()->getKey(window,Rotate) == GLFW_PRESS)
     {
         double x;
         double y;
@@ -79,7 +79,7 @@ void Camera::handleMouseButton(GLFWwindow* window, int button, int action, int m
         glm::vec3 directiony = panDirection(0,*(size+1)-y);
         //TODO determine the point at which is clicked
         //notify(glm::translate());
-        
+
     }
 }
 void Camera::handleMouseWheel(GLFWwindow* window, double xoffset, double yoffset)
@@ -127,7 +127,8 @@ void Camera::handleKey(GLFWwindow* window, Event event, int scancode, int action
         }
     }
 }
-void Camera::handleDrag(GLFWwindow* window, double xnewpos, double ynewpos) {
+void Camera::handleDrag(GLFWwindow* window, double xnewpos, double ynewpos) 
+{
     if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN)
         if (InputController::instance()->getKey(window, Event::Pan) == GLFW_PRESS)
         {
@@ -162,8 +163,4 @@ void Camera::refresh()
     viewpoint[0] += xperc * temp;
 
     view = glm::lookAt(viewpoint, center, glm::vec3(0.0f, 1.0f, 0.0f));
-}
-glm::mat4& Camera::getOrtho()
-{
-    return ortho;
 }

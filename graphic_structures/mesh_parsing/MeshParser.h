@@ -8,5 +8,5 @@
 class MeshParser
 {
 public:
-    static Mesh* parseMesh(std::string path, std::shared_ptr<Shader> sh);
+    static Mesh* parseMesh(std::string path);
 };

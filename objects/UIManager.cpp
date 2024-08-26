@@ -4,14 +4,14 @@ void UIManager::handleMouseButton(GLFWwindow* window, int button, int action, in
     double x;
     double y;
     glfwGetCursorPos(window,&x,&y);
-    for (const auto& val : interfaces)
-        val.first->attemptClick(window,(float)x,(float)y,button);
+    if (interfaces.size()>0)
+        interfaces.back()->attemptClick(window,(float)x,(float)y,button);
 }
 void UIManager::handleKey(GLFWwindow* window, Event e, int scancode, int action, int mods)
 {
     if (e == Escape && !interfaces.empty())
     {
-        detachUI(interfaces.back().first);
+        detachUI(interfaces.back());
         return;
     }
     else if (e == Test)
@@ -20,27 +20,24 @@ void UIManager::handleKey(GLFWwindow* window, Event e, int scancode, int action,
         // registerUI(new Interface(MeshParser::parseMesh("./resources/meshes/test.obj",sh),std::vector<Area>(),std::vector<Event>({Test2})));
     }
     if (!interfaces.empty())
-        interfaces.back().first->attemptKey(window, e);
+        interfaces.back()->attemptKey(window, e);
 }
 void UIManager::registerUI(Interface* i)
 {
-    interfaces.push_back(std::pair<Interface*,bool>(i,true));
+    interfaces.push_back(i);
 }
 void UIManager::draw()
 {
     for (const auto& val : interfaces)
-        if (val.second)
-            val.first->draw();
+            val->draw();
 }
 //calls for destruction of interface's children, then finds interface and destroys it
 bool UIManager::detachUI(Interface* i)
 {
-    for (auto& val : i->children)
-        detachUI(val);
     int index;
     for (index = 0; index < interfaces.size(); ++index)
     {
-        if (interfaces[index].first == i)
+        if (interfaces[index] == i)
             break;
     }
     auto itr = index + interfaces.begin();

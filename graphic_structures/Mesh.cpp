@@ -9,6 +9,7 @@ Mesh::Mesh(VBO* vbparam,
     model = glm::mat4(1.0f);
     shader->activate();
 	orthographic = true;
+	transparent = false;
     vao->linkAttribs(shader,vbo,ebo);
 };
 Mesh::~Mesh()
@@ -47,6 +48,10 @@ void Mesh::rotate(GLfloat angle, glm::vec3 vect)
 }
 void Mesh::draw() const
 {
+	if (transparent)
+		glDepthMask(GL_FALSE);
+	else
+		glDepthMask(GL_TRUE);
     for (int i=0;i<textures.size();i++)
     {
         textures.at(i)->bind(i,GL_TEXTURE_2D);

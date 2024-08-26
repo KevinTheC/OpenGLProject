@@ -7,6 +7,7 @@
 #include "OpenGLIncludes.h"
 #include "objects/Camera.h"
 #include "objects/UIManager.h"
+#include "objects/InterfaceFactory.h"
 #include "graphic_structures/fonts/FontTextureAtlas.h"
 #include "keybinds/InputController.h"
 #include "graphic_structures/mesh_parsing/MeshParser.h"
@@ -62,36 +63,33 @@ int main()
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
     
-    std::shared_ptr<Shader> sh = Shader::getShader(std::string("./resources/shaders/texture"));
-    TextMesh* text = FontTextureAtlas::buildText("HELLO WORLDD", std::array<GLfloat, 3>{0.0f,0.0f,0.4f});
-    text->setOffset(std::array<GLfloat, 3>{0.0f,0.0f,0.0f});
-    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
+    TextMesh* text = FontTextureAtlas::buildText("HELLO WORLDD", std::array<GLfloat, 3>{0.9f,0.0f,0.1f});
+    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
     Mesh* inter = InterfaceTextureAtlas::buildUI("./resources/textures/broThinkhePregnant.png");
-    
-    drawables.push_back(std::pair<Mesh*,bool>(inter,true));
+
+    // drawables.push_back(std::pair<Mesh*,bool>(inter,true));
 
 
 
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
     mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
     
-    drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
-    drawables.push_back(std::pair<Mesh*,bool>(text,true));
+    // drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
+    // drawables.push_back(std::pair<Mesh*,bool>(text,true));
 
     Camera::instance()->updateProjection(width, height);
     Camera::instance()->setFocus(glm::mat4(1.0f));
-    Camera::instance()->linkShader(sh.get());
 
 
     //Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
-    //UIManager::instance()->registerUI(new Interface(mesh,std::vector<Area>(),std::vector<Event>({Test2})));
+    UIManager::instance()->registerUI(InterfaceFactory::defaultInterface());
 
-    //drawables.push_back(std::pair<Mesh*,bool>(mesh2,true));
-
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
     glEnable(GL_DEPTH_TEST);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable( GL_BLEND );
+    glEnable(GL_BLEND);
 
     InputController::addObserver(Camera::instance().get());
     InputController::addObserver(UIManager::instance().get());
@@ -119,7 +117,6 @@ int main()
     } catch (...) {
         LOG_ALERT("Crashed! Unknown Exception thrown");
     }
-    sh->erase();
     glfwTerminate();
     return 0;
 }

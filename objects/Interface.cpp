@@ -1,7 +1,6 @@
 #include "Interface.h"
-Interface::Interface(Mesh* mesh, std::vector<Area> keepAlive, std::vector<Event> killKey)
+Interface::Interface(std::vector<Area> keepAlive, std::vector<Event> killKey)
 {
-    this->mesh = mesh;
     this->keepAlive = keepAlive;
     this->killKey = killKey;
 }
@@ -21,7 +20,11 @@ bool Interface::attemptClick(GLFWwindow* window, float x, float y, int button)
 }
 void Interface::draw() const
 {
-    for (const auto& child : children)
-        child->draw();
-    mesh->draw();
+    for (auto const& val : drawables)
+        val->draw();
+}
+Interface::~Interface()
+{
+    for (auto const& val : drawables)
+        delete(val);
 }
