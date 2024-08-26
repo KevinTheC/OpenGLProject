@@ -12,6 +12,7 @@
 #include "graphic_structures/mesh_parsing/MeshParser.h"
 #include "graphic_structures/Mesh.h"
 #include "graphic_structures/Texture.h"
+#include "graphic_structures/interfaces/InterfaceTextureAtlas.h"
 
 #ifdef LOGGING_DEBUG
 void GLAPIENTRY debugCallback(
@@ -65,8 +66,10 @@ int main()
     TextMesh* text = FontTextureAtlas::buildText("HELLO WORLDD", std::array<GLfloat, 3>{0.0f,0.0f,0.4f});
     text->setOffset(std::array<GLfloat, 3>{0.0f,0.0f,0.0f});
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
+    Mesh* inter = InterfaceTextureAtlas::buildUI("./resources/textures/broThinkhePregnant.png");
     
-    LOG_ALL(Logger::toString(*text));
+    drawables.push_back(std::pair<Mesh*,bool>(inter,true));
+
 
 
     mesh->scale(glm::vec3(0.1f,0.1f,0.1f));

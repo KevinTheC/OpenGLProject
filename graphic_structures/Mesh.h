@@ -32,8 +32,9 @@ public:
 	uint_fast8_t);
 	~Mesh();
 	std::shared_ptr<Shader> shader;
-	
 	std::vector<Texture*> textures;
+	bool orthographic;
+	
 	const glm::mat4& getModel() const;
     VBO* getVBO() const;
     EBO* getEBO() const;
