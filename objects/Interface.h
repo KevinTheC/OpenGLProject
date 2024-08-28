@@ -1,9 +1,11 @@
+#pragma once
 #include <stdlib.h>
 #include <vector>
 #include <algorithm>
+#include <map>
+#include <unordered_map>
 #include "graphic_structures/Mesh.h"
 #include "keybinds/Event.h"
-#pragma once
 //the struct is made up of 4 bounds that should be represented in a range of [0,1]
 struct Area
 {
@@ -18,14 +20,15 @@ struct Area
 };
 class Interface {
 private:
-    std::vector<Area> keepAlive;
-    std::vector<Event> killKey;
+    std::map<Mesh*,void(*)()> regions;
+    std::map<bool(*)(GLFWwindow*),void(*)()> keybinds;
 public:
     std::vector<Mesh*> drawables;
-    Interface(std::vector<Area> keepAlive, std::vector<Event> killKey);
+    Interface(std::map<Mesh*,void(*)()>, std::map<bool(*)(GLFWwindow*),void(*)()>);
     ~Interface();
     std::string name;
     bool attemptKey(GLFWwindow* window, Event event);
     bool attemptClick(GLFWwindow* window, float x, float y, int button);
     void draw() const;
+    static Area bounds(GLFWwindow* window, Mesh* mesh);
 };

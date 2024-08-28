@@ -22,6 +22,10 @@ const glm::mat4& Mesh::getModel() const
 {
     return model;
 }
+VAO* Mesh::getVAO() const
+{
+	return vao;
+}
 VBO* Mesh::getVBO() const
 {
     return vbo;

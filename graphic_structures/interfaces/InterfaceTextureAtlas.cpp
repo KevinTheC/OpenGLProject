@@ -6,7 +6,7 @@ Mesh* InterfaceTextureAtlas::buildUI(const std::string& file)
     GLfloat x = -0.5f;
     GLfloat y = -0.5f;
     std::array<GLfloat, 8> UVs = {0.0f,1.0f,1.0f,1.0f,0.0f,0.0f,1.0f,0.0f};
-    std::array<GLfloat, 8> XYZs = {x,y,x+1.0f,y,x,y+1.0f,x+1.0f,y+1.0f};
+    std::array<GLfloat, 8> XYZs = {-1.0f,-1.0f,1.0f,-1.0f,-1.0f,1.0f,1.0f,1.0f};
     for (size_t j = 0; j<8; j+=2)
     {
         vertexes->push_back(XYZs[j]);

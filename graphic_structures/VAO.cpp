@@ -43,3 +43,7 @@ void VAO::erase()
 {
 	glDeleteVertexArrays(1,&ID);
 }
+int VAO::getStride()
+{
+	return total;
+}

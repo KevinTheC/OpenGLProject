@@ -14,6 +14,7 @@ public:
 	void bind();
 	void unbind();
 	void erase();
+	int getStride();
 	VAO(std::shared_ptr<Shader> sh);
 private:
 	std::shared_ptr<Shader> shader;
