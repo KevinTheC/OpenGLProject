@@ -14,9 +14,12 @@ Mesh::Mesh(VBO* vbparam,
 };
 Mesh::~Mesh()
 {
-    delete(vbo);
-    delete(ebo);
-    delete(vao);
+	//LOG_ALL("Began Mesh::~Mesh() at " + Logger::toString((intptr_t)this));
+    //LOG_ALL("VBO " + Logger::toString((intptr_t)vbo) + " VAO " + Logger::toString((intptr_t)vao) + " EBO " + Logger::toString((intptr_t)ebo));
+	// delete(vbo);
+	// delete(vao);
+    // delete(ebo);
+	//LOG_ALL("Finished Mesh::~Mesh()");
 }
 const glm::mat4& Mesh::getModel() const
 {
@@ -56,7 +59,7 @@ void Mesh::draw() const
 		glDepthMask(GL_FALSE);
 	else
 		glDepthMask(GL_TRUE);
-    for (int i=0;i<textures.size();i++)
+    for (size_t i=0;i<textures.size();i++)
     {
         textures.at(i)->bind(i,GL_TEXTURE_2D);
         textures.at(i)->activate(shader.get(),i);

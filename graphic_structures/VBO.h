@@ -1,8 +1,8 @@
 #pragma once
-#ifndef VBO_CLASS_H
-#define VBO_CLASS_H
+#include "stdint.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include "log/logger.h"
 #include <vector>
 #include <memory>
 typedef struct Vertex {
@@ -30,7 +30,7 @@ class VBO
 {
 public:
 	GLuint ID;
-	VBO(std::vector<GLfloat>*);
+	VBO(std::vector<GLfloat>&&);
 	~VBO();
 	const std::vector<GLfloat>& getValues();
 	void bind();
@@ -38,7 +38,6 @@ public:
 	void erase();
 	void update();
 private:
-	std::vector<GLfloat>* vertices;
+	std::vector<GLfloat> vertices;
 };
-#endif
 

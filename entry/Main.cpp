@@ -63,33 +63,27 @@ int main()
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
     
-    TextMesh* text = FontTextureAtlas::buildText("HELLO WORLDD", std::array<GLfloat, 3>{0.9f,0.0f,0.1f});
     Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
-    Mesh* inter = InterfaceTextureAtlas::buildUI("./resources/textures/broThinkhePregnant.png");
 
-    // drawables.push_back(std::pair<Mesh*,bool>(inter,true));
+    // delete(mesh->getVBO());
+    // delete(mesh->getVAO());
+    // delete(mesh->getEBO());
+    // delete mesh;
 
-
-
-    mesh->scale(glm::vec3(0.1f,0.1f,0.1f));
-    mesh->translate(glm::vec3(1.0f,0.0f,0.0f));
-    
-    // drawables.push_back(std::pair<Mesh*,bool>(mesh,true));
-    // drawables.push_back(std::pair<Mesh*,bool>(text,true));
 
     Camera::instance()->updateProjection(width, height);
     Camera::instance()->setFocus(glm::mat4(1.0f));
 
-
+    
     //Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
-    UIManager::instance()->registerUI(InterfaceFactory::defaultInterface());
-
+    //UIManager::instance()->registerUI(InterfaceFactory::defaultInterface());
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.0f);
     glEnable(GL_DEPTH_TEST);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+
 
     InputController::addObserver(Camera::instance().get());
     InputController::addObserver(UIManager::instance().get());
@@ -108,7 +102,7 @@ int main()
             for (const auto& val : drawables)
                 if (val.second)
                     val.first->draw();
-            UIManager::instance()->draw();
+            // UIManager::instance()->draw();
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
@@ -117,6 +111,7 @@ int main()
     } catch (...) {
         LOG_ALERT("Crashed! Unknown Exception thrown");
     }
+    Shader::clearCache();
     glfwTerminate();
     return 0;
 }

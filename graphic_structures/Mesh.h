@@ -24,17 +24,18 @@ protected:
 	VAO* vao;
 	uint_fast8_t geometry;
 	glm::mat4 model;
+	std::shared_ptr<Shader> shader;
 public:
+	bool orthographic;
+	bool transparent;
+	std::vector<Texture*> textures;
+
 	Mesh(VBO*,
 	EBO*, 
 	VAO*,
 	std::shared_ptr<Shader>,
 	uint_fast8_t);
-	virtual ~Mesh();
-	std::shared_ptr<Shader> shader;
-	std::vector<Texture*> textures;
-	bool orthographic;
-	bool transparent;
+	~Mesh();
 	
 	const glm::mat4& getModel() const;
     VBO* getVBO() const;

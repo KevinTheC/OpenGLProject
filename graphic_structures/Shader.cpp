@@ -72,25 +72,17 @@ void Shader::compileError(unsigned int shader, const char* type)
 	GLint hasCompiled;
 	char infoLog[1024];
 	glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-	LOG_ALL(std::string("COMPILATION INFO: ")+std::string(infoLog));
 	if (type != "PROGRAM")
 	{
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
-		LOG_ALL(infoLog);
 		if (hasCompiled == GL_FALSE)
-		{
-			Logger::log << "SHADER_COMPILATION_ERROR for:" << type << "\n";
-			Logger::log << infoLog << "\n";
-		}
+			LOG_ALL("Shader compilation error for: "+ Logger::toString(type) + "\n" + infoLog);
 	}
 	else
 	{
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
 		if (hasCompiled == GL_FALSE)
-		{
-			Logger::log << "SHADER_COMPILATION_ERROR for:" << type << "\n";
-			Logger::log << infoLog << "\n";
-		}
+			LOG_ALL("Shader compilation error for: "+ Logger::toString(type) + "\n" + infoLog);
 	}
 }
 std::vector<int> Shader::getAttribs()
@@ -103,4 +95,8 @@ std::shared_ptr<Shader> Shader::getShader(std::string file)
         return std::shared_ptr<Shader>(&(map.at(file)));
     map.emplace(file,Shader(file));
     return std::shared_ptr<Shader>(&(map.at(file)));
+}
+void Shader::clearCache()
+{
+	map.clear();
 }

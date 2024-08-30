@@ -11,6 +11,10 @@ void TextMesh::draw() const
 	ebo->draw(geometry);
 	vao->unbind();
 }
+TextMesh::~TextMesh()
+{	
+    LOG_ALL("Began TextMesh::~TextMesh() at " + Logger::toString((intptr_t)this));
+}
 void TextMesh::setColor(std::array<GLfloat, 3> rgb)
 {
     this->rgb = rgb;

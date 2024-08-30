@@ -6,7 +6,10 @@ void UIManager::handleMouseButton(GLFWwindow* window, int button, int action, in
     glfwGetCursorPos(window,&x,&y);
     if (interfaces.size()>0)
         if (!interfaces.back()->attemptClick(window,(float)x,(float)y,button))
+        {
             detachUI(interfaces.back());
+        }
+    
 }
 void UIManager::handleKey(GLFWwindow* window, Event e, int scancode, int action, int mods)
 {

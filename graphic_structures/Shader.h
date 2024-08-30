@@ -25,4 +25,5 @@ public:
 	void erase();
 	void compileError(unsigned int shader, const char* type);
 	std::vector<int> getAttribs();
+	static void clearCache();
 };

@@ -11,18 +11,14 @@ Mesh* OBJParser::parse(std::string path)
 
     OBJParser::getVertexes(std::ifstream(path),prevertex,prevertexmap);
 
-    LOG_DEBUG(std::string("Vertexes parsed"));
-    LOG_ALL(std::string("Count: ")+std::to_string(prevertex.size()));
-
     OBJParser::getUVs(std::ifstream(path),pretexture,pretexturemap);
 
-    LOG_DEBUG(std::string("UVs parsed"));
-    LOG_ALL(std::string("Count: ")+std::to_string(pretexture.size()));
+    LOG_DEBUG("Mesh parsed with UV count: "+Logger::toString(pretexture.size())+" and Vertexes (x,y,z all count as 1 each): "+Logger::toString(prevertex.size()));
 
     //the vertex UV pair the face is pointing to will not be at a constant position. therefore, we need to first read all UV mappings and vertexes, then use the hashmap to O(1) access
     //the vertex and UV indexes, and generate the VBO's representation of the pair. Afterwards, we will determine the position at which face the ebo should point. EBO will be in quad format
-    std::vector<GLuint>* faces = new std::vector<GLuint>();
-    std::vector<Vertex>* vertexes = new std::vector<Vertex>();
+    std::vector<GLuint> faces = std::vector<GLuint>();
+    std::vector<Vertex> vertexes = std::vector<Vertex>();
     std::unordered_map<Vertex,int_fast16_t> vertexmap;
 
     std::string line;
@@ -60,29 +56,27 @@ Mesh* OBJParser::parse(std::string path)
                 LOG_DEBUG(std::string("Failed to parse a face at ")+path+std::string(". Face: ") + line);
             }
             if (vertexmap.find(v) != vertexmap.end())
-                faces->push_back(vertexmap.at(v));
+                faces.push_back(vertexmap.at(v));
             else
             {
-                vertexes->push_back(v);
-                faces->push_back(i);
+                vertexes.push_back(v);
+                faces.push_back(i);
                 vertexmap.emplace(v,i++);
             }
         }
     } while (stream.peek()!=EOF);
-    LOG_DEBUG("Mesh Parsed.");
-    EBO* ebo = new EBO(faces);
-    LOG_ALL(faces->size());
-    std::vector<GLfloat>* floats = new std::vector<GLfloat>();
-    for (i=0;i<vertexes->size();i++)
+    EBO* ebo = new EBO(std::move(faces));
+    std::vector<GLfloat> floats = std::vector<GLfloat>();
+    for (i=0;i<vertexes.size();i++)
     {
-        floats->push_back(vertexes->at(i).position[0]);
-        floats->push_back(vertexes->at(i).position[1]);
-        floats->push_back(vertexes->at(i).position[2]);
-        floats->push_back(vertexes->at(i).UV[0]);
-        floats->push_back(vertexes->at(i).UV[1]);
-        floats->push_back(vertexes->at(i).index);
+        floats.push_back(vertexes.at(i).position[0]);
+        floats.push_back(vertexes.at(i).position[1]);
+        floats.push_back(vertexes.at(i).position[2]);
+        floats.push_back(vertexes.at(i).UV[0]);
+        floats.push_back(vertexes.at(i).UV[1]);
+        floats.push_back(vertexes.at(i).index);
     }
-    VBO* vbo = new VBO(floats);
+    VBO* vbo = new VBO(std::move(floats));
     Mesh* ptr = new Mesh(vbo,ebo,new VAO(sh),sh,GL_QUADS);
 
     //Load references for textures into Mesh

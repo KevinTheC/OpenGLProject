@@ -7,7 +7,7 @@ class EBO
 {
 public:
 	GLuint ID;
-	EBO(std::vector<GLuint>* vec);
+	EBO(std::vector<GLuint>&&);
 	~EBO();
 	void draw(int gl_geometry);
 	void bind();
@@ -15,7 +15,7 @@ public:
 	void erase();
 	std::vector<GLuint>& getValues();
 private:
-	std::vector<GLuint>* indices;
+	std::vector<GLuint> indices;
 };
 
 

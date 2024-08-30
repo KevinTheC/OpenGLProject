@@ -20,11 +20,11 @@ struct Area
 };
 class Interface {
 private:
-    std::map<Mesh*,void(*)()> regions;
+    std::map<Mesh*,void(*)(Interface*)> regions;
     std::map<bool(*)(GLFWwindow*),void(*)()> keybinds;
 public:
     std::vector<Mesh*> drawables;
-    Interface(std::map<Mesh*,void(*)()>, std::map<bool(*)(GLFWwindow*),void(*)()>);
+    Interface(std::map<Mesh*,void(*)(Interface*)>, std::map<bool(*)(GLFWwindow*),void(*)()>);
     ~Interface();
     std::string name;
     bool attemptKey(GLFWwindow* window, Event event);

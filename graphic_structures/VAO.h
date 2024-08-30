@@ -16,6 +16,7 @@ public:
 	void erase();
 	int getStride();
 	VAO(std::shared_ptr<Shader> sh);
+	~VAO();
 private:
 	std::shared_ptr<Shader> shader;
 	int attribs;

@@ -16,7 +16,6 @@ void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo, EBO* ebo)
 
 	std::vector<int> vec = sh->getAttribs();
 	int stride = 0;
-	//I have no idea whats going on here but I need to bind
 	for (int i : vec)
 		stride += i;
 	for (int i : vec)
@@ -26,7 +25,7 @@ void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo, EBO* ebo)
 
 		total += i;
 	}
-	LOG_ALL(std::string("Attributes, then total: ")+std::to_string(attribs)+std::string(" ")+std::to_string(total));
+	LOG_ALL("Attributes, then total for VAO: "+std::to_string(attribs)+" "+std::to_string(total));
 	vbo->unbind();
 	unbind();
 	ebo->unbind();
@@ -46,4 +45,9 @@ void VAO::erase()
 int VAO::getStride()
 {
 	return total;
+}
+VAO::~VAO()
+{
+	VAO::erase();
+	LOG_ALL("VAO destroyed");
 }

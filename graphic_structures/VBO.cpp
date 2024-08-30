@@ -1,16 +1,18 @@
 #include "VBO.h"
 
-VBO::VBO(std::vector<GLfloat>* vec)
+VBO::VBO(std::vector<GLfloat>&& vec)
 {
-	vertices = vec;
+	vertices = std::move(vec);
 	glGenBuffers(1, &ID);
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
-	glBufferData(GL_ARRAY_BUFFER, vertices->size()*sizeof(GLfloat), vertices->data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 VBO::~VBO()
 {
-	delete(vertices);
+	unbind();
+// delete(vertices);
+	LOG_ALL("A VBO was deleted.");
 }
 void VBO::bind()
 {
@@ -27,10 +29,10 @@ void VBO::erase()
 
 void VBO::update() {
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
-	glBufferData(GL_ARRAY_BUFFER, vertices->size() * sizeof(GLfloat), vertices->data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 const std::vector<GLfloat>& VBO::getValues()
 {
-	return *(vertices);
+	return (vertices);
 }

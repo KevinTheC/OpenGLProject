@@ -1,5 +1,5 @@
 #include "Interface.h"
-Interface::Interface(std::map<Mesh*,void(*)()> regions, std::map<bool(*)(GLFWwindow*),void(*)()> keybinds)
+Interface::Interface(std::map<Mesh*,void(*)(Interface*)> regions, std::map<bool(*)(GLFWwindow*),void(*)()> keybinds)
 {
     this->regions = regions;
     this->keybinds = keybinds;
@@ -19,11 +19,14 @@ bool Interface::attemptKey(GLFWwindow* window, Event event)
 bool Interface::attemptClick(GLFWwindow* window, float x, float y, int button)
 {
     for (auto const& val : regions)
+    {
         if (bounds(window,val.first).isInBounds(x,y))
         {
-            val.second();
+            
+            val.second(this);
             return true;  
         }
+    }
     return false;
 }
 void Interface::draw() const
@@ -54,7 +57,6 @@ Area Interface::bounds(GLFWwindow* window, Mesh* mesh)
         if (values[i+1] < ymin)
             values[i+1] = ymin;
     }
-    //i have no clue if this works atm, focusing on other things in this class rn
     float ifWidth = (xmax - xmin) * width * model[0][0];
     float ifHeight = (ymax - ymin) * height * model[1][1];
     Area area;
@@ -67,6 +69,12 @@ Area Interface::bounds(GLFWwindow* window, Mesh* mesh)
 
 Interface::~Interface()
 {
-    for (auto const& val : drawables)
+    LOG_ALL("TEST");
+    for (auto val : drawables)
+    {
+        LOG_ALL("code");
         delete(val);
+        LOG_ALL("Code");
+    }
+    LOG_ALL("TEST");
 }
