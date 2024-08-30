@@ -1,16 +1,16 @@
 #include "Mesh.h"
-Mesh::Mesh(VBO* vbparam,
-    EBO* ebparam, 
-	VAO* vaparam,
+Mesh::Mesh(VBO&& vbparam,
+    EBO&& ebparam, 
+	VAO&& vaparam,
     std::shared_ptr<Shader> shparam,
     uint_fast8_t geometryparam) : 
-    vbo{vbparam}, ebo{ebparam}, vao{vaparam}, shader{shparam}, geometry{geometryparam}
+    vbo{std::move(vbparam)}, ebo{std::move(ebparam)}, vao{std::move(vaparam)}, shader{shparam}, geometry{geometryparam}
 {
     model = glm::mat4(1.0f);
     shader->activate();
 	orthographic = true;
 	transparent = false;
-    vao->linkAttribs(shader,vbo,ebo);
+    vao.linkAttribs(shader,vbo,ebo);
 };
 Mesh::~Mesh()
 {
@@ -25,15 +25,15 @@ const glm::mat4& Mesh::getModel() const
 {
     return model;
 }
-VAO* Mesh::getVAO() const
+const VAO& Mesh::getVAO() const
 {
 	return vao;
 }
-VBO* Mesh::getVBO() const
+const VBO& Mesh::getVBO() const
 {
     return vbo;
 }
-EBO* Mesh::getEBO() const 
+const EBO& Mesh::getEBO() const 
 {
     return ebo;
 }
@@ -53,7 +53,7 @@ void Mesh::rotate(GLfloat angle, glm::vec3 vect)
 {
     model = glm::rotate(model,angle,vect);
 }
-void Mesh::draw() const
+void Mesh::draw()
 {
 	if (transparent)
 		glDepthMask(GL_FALSE);
@@ -68,9 +68,9 @@ void Mesh::draw() const
     	Camera::instance()->linkShader(shader.get());
     GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	vao->bind();
-	ebo->draw(geometry);
-	vao->unbind();
+	vao.bind();
+	ebo.draw(geometry);
+	vao.unbind();
 }
 
 std::string Mesh::toString() const
@@ -86,32 +86,32 @@ std::string Mesh::toString() const
 		stride = 3;
 	if (geometry == GL_TRIANGLES||geometry == GL_QUADS)
 	{
-		for (size_t i = 0; i < ebo->getValues().size()/stride; ++i)
+		for (size_t i = 0; i < ebo.getValues().size()/stride; ++i)
 		{
 			std::vector<std::string> inner;
 			for (size_t j = 0; j < stride; ++j)
 			{
-				inner.push_back(std::to_string(ebo->getValues()[i*stride+j]));
+				inner.push_back(std::to_string(ebo.getValues()[i*stride+j]));
 			}
 			outer.push_back(MyUtil::arrayifier(inner,false));
 		}
 		ebostr = MyUtil::arrayifier(outer,true);
 	} else
 	{
-		for (size_t i = 0; i < ebo->getValues().size(); ++i)
-			outer.push_back(std::to_string(ebo->getValues()[i]));
+		for (size_t i = 0; i < ebo.getValues().size(); ++i)
+			outer.push_back(std::to_string(ebo.getValues()[i]));
 		ebostr = MyUtil::arrayifier(outer,false);
 	}
 	outer.clear();
 	stride = 0;
 	for (auto attrib : shader->getAttribs())
 		stride += attrib;
-	for (size_t i = 0; i < vbo->getValues().size()/stride; ++i)
+	for (size_t i = 0; i < vbo.getValues().size()/stride; ++i)
 	{
 		std::vector<std::string> inner;
 		for (size_t j = 0; j < stride; ++j)
 		{
-			inner.push_back(std::to_string(vbo->getValues()[i*stride+j]));
+			inner.push_back(std::to_string(vbo.getValues()[i*stride+j]));
 		}
 		outer.push_back(MyUtil::arrayifier(inner,false));
 	}

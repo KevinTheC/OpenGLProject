@@ -19,9 +19,9 @@
 class Mesh
 {
 protected:
-	VBO* vbo;
-	EBO* ebo;
-	VAO* vao;
+	VBO vbo;
+	EBO ebo;
+	VAO vao;
 	uint_fast8_t geometry;
 	glm::mat4 model;
 	std::shared_ptr<Shader> shader;
@@ -30,21 +30,21 @@ public:
 	bool transparent;
 	std::vector<Texture*> textures;
 
-	Mesh(VBO*,
-	EBO*, 
-	VAO*,
+	Mesh(VBO&&,
+	EBO&&, 
+	VAO&&,
 	std::shared_ptr<Shader>,
 	uint_fast8_t);
 	~Mesh();
 	
 	const glm::mat4& getModel() const;
-    VBO* getVBO() const;
-    EBO* getEBO() const;
-	VAO* getVAO() const;
+    const VBO& getVBO() const;
+    const EBO& getEBO() const;
+	const VAO& getVAO() const;
 	std::shared_ptr<Shader> getShader() const;
 	void scale(glm::vec3);
 	void translate(glm::vec3);
 	void rotate(GLfloat, glm::vec3);
-	virtual void draw() const;
+	virtual void draw();
 	std::string toString() const;
 };

@@ -1,4 +1,5 @@
 #pragma once
+#include <utility>
 #include "stdint.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -32,7 +33,24 @@ public:
 	GLuint ID;
 	VBO(std::vector<GLfloat>&&);
 	~VBO();
-	const std::vector<GLfloat>& getValues();
+
+	VBO(const VBO& other)
+		: ID(other.ID), vertices(other.vertices) {}
+	VBO(VBO&& other) noexcept
+		: vertices(std::move(other.vertices)), ID(std::exchange(other.ID,0)) {}
+	VBO& operator=(const VBO& other)
+	{
+		return *this = VBO(other);
+	}
+	VBO& operator=(VBO&& other) noexcept
+	{
+		std::swap(vertices, other.vertices);
+		std::swap(ID,other.ID);
+		return *this;
+	}
+
+
+	const std::vector<GLfloat>& getValues() const;
 	void bind();
 	void unbind();
 	void erase();

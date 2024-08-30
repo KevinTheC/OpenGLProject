@@ -40,8 +40,8 @@ Area Interface::bounds(GLFWwindow* window, Mesh* mesh)
     int width, height;
     glfwGetWindowSize(window,&width,&height);
     glm::mat4 model = mesh->getModel();
-    std::vector<GLfloat> values = mesh->getVBO()->getValues();
-    int stride = mesh->getVAO()->getStride();
+    std::vector<GLfloat> values = mesh->getVBO().getValues();
+    int stride = mesh->getVAO().getStride();
     float xmin = -300000000;
     float xmax = MAX_FLOAT;
     float ymin = -300000000;

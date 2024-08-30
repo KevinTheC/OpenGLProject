@@ -25,11 +25,11 @@ void EBO::erase()
 {
 	glDeleteBuffers(1, &ID);
 }
-void EBO::draw(int gl_geometry)
+void EBO::draw(int gl_geometry) const
 {
 	glDrawElements(gl_geometry, indices.size(), GL_UNSIGNED_INT, (void*)0);
 }
-std::vector<GLuint>& EBO::getValues()
+const std::vector<GLuint>& EBO::getValues() const
 {
 	return indices;
 }

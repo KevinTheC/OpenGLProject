@@ -31,7 +31,7 @@ TextMesh* FontTextureAtlas::buildText(const std::string& text, std::array<GLfloa
         faces.push_back(i+1);
     }
     std::shared_ptr<Shader> shader = Shader::getShader(std::string("./resources/shaders/coloredText"));
-    TextMesh* ptr = new TextMesh(new VBO(std::move(vertexes)),new EBO(std::move(faces)),new VAO(shader),shader,GL_QUADS);
+    TextMesh* ptr = new TextMesh(std::move(VBO(std::move(vertexes))),std::move(EBO(std::move(faces))),std::move(VAO(shader)),shader,GL_QUADS);
     ptr->setColor(rgb);
     ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/fonts/consolasTransparent.png")));
     return ptr;

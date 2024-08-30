@@ -32,7 +32,7 @@ void VBO::update() {
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-const std::vector<GLfloat>& VBO::getValues()
+const std::vector<GLfloat>& VBO::getValues() const
 {
-	return (vertices);
+	return vertices;
 }

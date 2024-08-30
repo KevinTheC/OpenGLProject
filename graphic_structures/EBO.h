@@ -1,4 +1,5 @@
 #pragma once
+#include <utility>
 #include <GL/glew.h>
 #include <memory>
 #include <vector>
@@ -9,11 +10,27 @@ public:
 	GLuint ID;
 	EBO(std::vector<GLuint>&&);
 	~EBO();
-	void draw(int gl_geometry);
+
+	EBO(const EBO& other)
+		: indices(other.indices), ID(other.ID) {}
+	EBO(EBO&& other) noexcept
+		: indices(std::move(other.indices)), ID(std::exchange(other.ID,0)) {}
+	EBO& operator=(const EBO& other)
+	{
+		return *this = EBO(other);
+	}
+	EBO& operator=(EBO&& other) noexcept
+	{
+		std::swap(indices, other.indices);
+		std::swap(ID,other.ID);
+		return *this;
+	}
+
+	void draw(int gl_geometry) const;
 	void bind();
 	void unbind();
 	void erase();
-	std::vector<GLuint>& getValues();
+	const std::vector<GLuint>& getValues() const;
 private:
 	std::vector<GLuint> indices;
 };

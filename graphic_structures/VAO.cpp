@@ -6,11 +6,11 @@ VAO::VAO(std::shared_ptr<Shader> sh) {
 	glGenVertexArrays(1, &ID);
 }
 //VBO MUST BE BOUND BEFORE DOING THIS!
-void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo, EBO* ebo)
+void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO& vbo, EBO& ebo)
 {
 	bind();
-	vbo->bind();
-	ebo->bind();
+	vbo.bind();
+	ebo.bind();
 	attribs = 0;
 	total = 0;
 
@@ -26,9 +26,9 @@ void VAO::linkAttribs(std::shared_ptr<Shader> sh, VBO* vbo, EBO* ebo)
 		total += i;
 	}
 	LOG_ALL("Attributes, then total for VAO: "+std::to_string(attribs)+" "+std::to_string(total));
-	vbo->unbind();
+	vbo.unbind();
 	unbind();
-	ebo->unbind();
+	ebo.unbind();
 }
 void VAO::bind()
 {
@@ -42,7 +42,7 @@ void VAO::erase()
 {
 	glDeleteVertexArrays(1,&ID);
 }
-int VAO::getStride()
+int VAO::getStride() const
 {
 	return total;
 }
