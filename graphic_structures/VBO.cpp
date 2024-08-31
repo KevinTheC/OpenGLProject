@@ -11,7 +11,8 @@ VBO::VBO(std::vector<GLfloat>&& vec)
 VBO::~VBO()
 {
 	unbind();
-// delete(vertices);
+	if (glIsBuffer(ID))
+	    erase();
 	LOG_ALL("A VBO was deleted.");
 }
 void VBO::bind()

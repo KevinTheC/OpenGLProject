@@ -29,7 +29,7 @@ public:
 	VAO& operator=(VAO&& other) noexcept
 	{
 		std::swap(shader, other.shader);
-		std::swap(ID,other.ID);
+		ID = std::exchange(other.ID,0);
 		return *this;
 	}
 	~VAO();

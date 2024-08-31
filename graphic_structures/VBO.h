@@ -45,7 +45,7 @@ public:
 	VBO& operator=(VBO&& other) noexcept
 	{
 		std::swap(vertices, other.vertices);
-		std::swap(ID,other.ID);
+		ID = std::exchange(other.ID,0);
 		return *this;
 	}
 

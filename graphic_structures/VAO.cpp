@@ -48,6 +48,7 @@ int VAO::getStride() const
 }
 VAO::~VAO()
 {
-	VAO::erase();
+	if (glIsVertexArray(ID))
+	    VAO::erase();
 	LOG_ALL("VAO destroyed");
 }

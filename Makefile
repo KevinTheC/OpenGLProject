@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -fdiagnostics-color=always -g -Wno-unused-function -Wno-unused-variable -Wno-unused-parameter
+CXXFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -g -fanalyzer -fsanitize=address -fsanitize=leak -fsanitize=undefined -static-libasan
 #change to whatever the includes are
 INCLUDES = -Iinclude -I"$(shell pwd)" -Iinclude/boost_1_82_0
 LIBSDIRS = -L./lib
@@ -8,7 +8,7 @@ SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 OBJS = $(SRCS:.cpp=.o)
 EXEC = a_output
 DEBUG = a_debug
-DEBUGFLAGS = -std=c++17 -Wall -Wextra -fdiagnostics-color=always -g -Wno-unused-function -Wno-unused-variable -Wno-unused-parameter -static-libgcc -static-libstdc++ -gdwarf-2
+DEBUGFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -g -static-libgcc -static-libstdc++ -gdwarf-2
 DEBUGOBJS = $(SRCS:.cpp=_debug.o)
 
 all: $(EXEC)

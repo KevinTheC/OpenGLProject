@@ -35,7 +35,6 @@ public:
 	VAO&&,
 	std::shared_ptr<Shader>,
 	uint_fast8_t);
-	~Mesh();
 	
 	const glm::mat4& getModel() const;
     const VBO& getVBO() const;

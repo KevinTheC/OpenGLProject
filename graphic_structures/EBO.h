@@ -22,7 +22,7 @@ public:
 	EBO& operator=(EBO&& other) noexcept
 	{
 		std::swap(indices, other.indices);
-		std::swap(ID,other.ID);
+		ID = std::exchange(other.ID,0);
 		return *this;
 	}
 

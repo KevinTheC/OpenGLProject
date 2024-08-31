@@ -10,7 +10,8 @@ EBO::EBO(std::vector<GLuint>&& vec)
 EBO::~EBO()
 {
 	unbind();
-	// delete(indices);
+	if (glIsBuffer(ID))
+	    erase();
 	LOG_ALL("Deleted an EBO");
 }
 void EBO::bind()

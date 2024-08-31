@@ -77,12 +77,12 @@ Mesh* OBJParser::parse(std::string path)
         floats.push_back(vertexes.at(i).index);
     }
     VBO vbo = VBO(std::move(floats));
+    LOG_ALL(std::string("Size of EBO, then VBO:" )+std::to_string(ebo.getValues().size())+std::string(", ")+std::to_string(vbo.getValues().size()));
     Mesh* ptr = new Mesh(std::move(vbo),std::move(ebo),std::move(VAO(sh)),sh,GL_QUADS);
 
     //Load references for textures into Mesh
     loadTextures(std::ifstream(changeExtension(path)),ptr);
 
-    LOG_ALL(std::string("Size of EBO, then VBO:" )+std::to_string(ebo.getValues().size())+std::string(", ")+std::to_string(vbo.getValues().size()));
     return ptr;
 }
 

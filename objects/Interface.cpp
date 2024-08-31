@@ -69,12 +69,10 @@ Area Interface::bounds(GLFWwindow* window, Mesh* mesh)
 
 Interface::~Interface()
 {
-    LOG_ALL("TEST");
-    for (auto val : drawables)
+    while (!drawables.empty())
     {
-        LOG_ALL("code");
-        delete(val);
-        LOG_ALL("Code");
+        Mesh* m = drawables.back();
+        drawables.pop_back();
+        delete m;
     }
-    LOG_ALL("TEST");
 }

@@ -10,17 +10,8 @@ Mesh::Mesh(VBO&& vbparam,
     shader->activate();
 	orthographic = true;
 	transparent = false;
-    vao.linkAttribs(shader,vbo,ebo);
+    //vao.linkAttribs(shader,vbo,ebo);
 };
-Mesh::~Mesh()
-{
-	//LOG_ALL("Began Mesh::~Mesh() at " + Logger::toString((intptr_t)this));
-    //LOG_ALL("VBO " + Logger::toString((intptr_t)vbo) + " VAO " + Logger::toString((intptr_t)vao) + " EBO " + Logger::toString((intptr_t)ebo));
-	// delete(vbo);
-	// delete(vao);
-    // delete(ebo);
-	//LOG_ALL("Finished Mesh::~Mesh()");
-}
 const glm::mat4& Mesh::getModel() const
 {
     return model;

@@ -53,7 +53,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
     if (glewInit() != GLEW_OK) {
-        Logger::log << "glew failed to initialize." << std::endl;
+        LOG_ALERT("glew failed to initialize.");
         return -1;
     }
     glViewport(0, 0, width, height);
@@ -62,13 +62,23 @@ int main()
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
-    
-    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
-
+    LOG_ALL("valid");
+    //Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
+    void (*func)() = [](){
+        Mesh mesh = Mesh(std::move(VBO(std::move(std::vector<GLfloat>()))),std::move(EBO(std::move(std::vector<GLuint>()))),
+        std::move(VAO(nullptr)),nullptr,GL_QUADS);
+    };
+    func();
+    LOG_ALL("test");
+    // 	Mesh(VBO&&,
+	// EBO&&, 
+	// VAO&&,
+	// std::shared_ptr<Shader>,
+	// uint_fast8_t);
     // delete(mesh->getVBO());
     // delete(mesh->getVAO());
     // delete(mesh->getEBO());
-    // delete mesh;
+
 
 
     Camera::instance()->updateProjection(width, height);
