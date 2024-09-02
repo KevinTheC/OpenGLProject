@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -g -fanalyzer -fsanitize=address -fsanitize=leak -fsanitize=undefined -static-libasan
+CXXFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -g
 #change to whatever the includes are
 INCLUDES = -Iinclude -I"$(shell pwd)" -Iinclude/boost_1_82_0
 LIBSDIRS = -L./lib

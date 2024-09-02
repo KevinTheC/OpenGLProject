@@ -51,7 +51,7 @@ Shader::Shader(std::string file)
 	//delete the objects, already exist in the program
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	LOG_DEBUG(std::string("Shaders parsed at: ")+std::string(file));
+	LOG_DEBUG("Shaders parsed at: "+file);
 }
 
 
@@ -92,9 +92,9 @@ std::vector<int> Shader::getAttribs()
 std::shared_ptr<Shader> Shader::getShader(std::string file)
 {
 	if (map.find(file)!=map.end())
-        return std::shared_ptr<Shader>(&(map.at(file)));
-    map.emplace(file,Shader(file));
-    return std::shared_ptr<Shader>(&(map.at(file)));
+        return map.at(file);
+    map.emplace(file,std::shared_ptr<Shader>(new Shader(file)));
+    return map.at(file);
 }
 void Shader::clearCache()
 {

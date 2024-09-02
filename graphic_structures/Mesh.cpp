@@ -10,7 +10,7 @@ Mesh::Mesh(VBO&& vbparam,
     shader->activate();
 	orthographic = true;
 	transparent = false;
-    //vao.linkAttribs(shader,vbo,ebo);
+    vao.linkAttribs(shader,vbo,ebo);
 };
 const glm::mat4& Mesh::getModel() const
 {

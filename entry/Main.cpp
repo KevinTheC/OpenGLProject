@@ -63,10 +63,9 @@ int main()
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
     LOG_ALL("valid");
-    //Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
     void (*func)() = [](){
-        Mesh mesh = Mesh(std::move(VBO(std::move(std::vector<GLfloat>()))),std::move(EBO(std::move(std::vector<GLuint>()))),
-        std::move(VAO(nullptr)),nullptr,GL_QUADS);
+        Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
+        delete mesh;
     };
     func();
     LOG_ALL("test");
@@ -78,7 +77,7 @@ int main()
     // delete(mesh->getVBO());
     // delete(mesh->getVAO());
     // delete(mesh->getEBO());
-
+    
 
 
     Camera::instance()->updateProjection(width, height);

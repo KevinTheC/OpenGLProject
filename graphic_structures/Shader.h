@@ -17,7 +17,7 @@ private:
 	static GLuint current;
 	std::vector<int> attribs;
 	Shader(std::string file);
-	inline static std::unordered_map<std::string, Shader> map;
+	inline static std::unordered_map<std::string, std::shared_ptr<Shader>> map;
 public:
 	const GLuint ID = glCreateProgram();
 	static std::shared_ptr<Shader> getShader(std::string);
