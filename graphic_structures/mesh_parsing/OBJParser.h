@@ -12,10 +12,6 @@
 #include "graphic_structures/VAO.h"
 #include "graphic_structures/Mesh.h"
 #include "graphic_structures/Texture.h"
-typedef struct BufferPointers{
-    std::reference_wrapper<VBO> vbo;
-    std::reference_wrapper<EBO> ebo;
-} BufferPointers;
 class OBJParser{
 public:
     static Mesh* parse(std::string path);

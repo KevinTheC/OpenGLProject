@@ -32,7 +32,7 @@ void GLAPIENTRY debugCallback(
 int height = 900;
 int width = 800;
 
-std::vector<std::pair<Mesh*,bool>> drawables;
+std::vector<Mesh*> drawables;
 
 using namespace glm;
 int main()
@@ -62,13 +62,11 @@ int main()
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
-    LOG_ALL("valid");
-    void (*func)() = [](){
-        Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
-        delete mesh;
-    };
-    func();
-    LOG_ALL("test");
+    
+    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
+    drawables.push_back(mesh);
+    LOG_ALL(Logger::toString(*mesh));
+    //drawables.push_back(poop);
     // 	Mesh(VBO&&,
 	// EBO&&, 
 	// VAO&&,
@@ -77,15 +75,13 @@ int main()
     // delete(mesh->getVBO());
     // delete(mesh->getVAO());
     // delete(mesh->getEBO());
-    
+
 
 
     Camera::instance()->updateProjection(width, height);
     Camera::instance()->setFocus(glm::mat4(1.0f));
 
-    
-    //Mesh* mesh2 = MeshParser::parseMesh("./resources/meshes/test.obj",sh);
-    //UIManager::instance()->registerUI(InterfaceFactory::defaultInterface());
+    UIManager::instance()->registerUI(InterfaceFactory::defaultInterface());
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.0f);
     glEnable(GL_DEPTH_TEST);
@@ -109,9 +105,8 @@ int main()
             glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             for (const auto& val : drawables)
-                if (val.second)
-                    val.first->draw();
-            // UIManager::instance()->draw();
+                val->draw();
+            UIManager::instance()->draw();
             glfwSwapBuffers(window);
             glfwPollEvents();
         }

@@ -8,7 +8,7 @@ Mesh::Mesh(VBO&& vbparam,
 {
     model = glm::mat4(1.0f);
     shader->activate();
-	orthographic = true;
+	orthographic = false;
 	transparent = false;
     vao.linkAttribs(shader,vbo,ebo);
 };
@@ -53,7 +53,7 @@ void Mesh::draw()
     for (size_t i=0;i<textures.size();i++)
     {
         textures.at(i)->bind(i,GL_TEXTURE_2D);
-        textures.at(i)->activate(shader.get(),i);
+        textures.at(i)->activate(shader,i);
     }
 	if (!orthographic)
     	Camera::instance()->linkShader(shader.get());

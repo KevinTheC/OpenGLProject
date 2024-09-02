@@ -105,7 +105,7 @@ void OBJParser::loadTextures(std::ifstream stream, Mesh* ptr)
             str >> f;
             auto vec = MyUtil::splitString(f,'/');
             f = vec[vec.size()-1];
-            ptr->textures.push_back(&Texture::getTexture(std::string("./resources/textures/")+f));
+            ptr->textures.push_back(Texture::getTexture(std::string("./resources/textures/")+f));
         }
     } while (stream.peek()!=EOF);
 }
@@ -147,7 +147,6 @@ std::vector<glm::vec2>& prephase,
 std::unordered_map<int_fast16_t,glm::vec2>& premap)
 {
     std::string line;
-    //don't know how string works under the hood so I do this just incase im reading uninitialized memory
     std::getline(stream,line);
     while (line[1]!='t'||line[0]!='v')
         std::getline(stream,line);

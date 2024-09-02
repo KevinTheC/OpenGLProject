@@ -19,16 +19,16 @@
 class Mesh
 {
 protected:
+	VAO vao;
 	VBO vbo;
 	EBO ebo;
-	VAO vao;
 	uint_fast8_t geometry;
 	glm::mat4 model;
 	std::shared_ptr<Shader> shader;
 public:
 	bool orthographic;
 	bool transparent;
-	std::vector<Texture*> textures;
+	std::vector<std::shared_ptr<Texture>> textures;
 
 	Mesh(VBO&&,
 	EBO&&, 

@@ -20,7 +20,7 @@ Mesh* InterfaceTextureAtlas::buildUI(const std::string& file)
     faces.push_back(1);
     std::shared_ptr<Shader> shader = Shader::getShader(std::string("./resources/shaders/singleTexture"));
     Mesh* ptr = new TextMesh(std::move(VBO(std::move(vertexes))),std::move(EBO(std::move(faces))),std::move(VAO(shader)),shader,GL_QUADS);
-    ptr->textures.push_back(&Texture::getTexture(file));
+    ptr->textures.push_back(Texture::getTexture(file));
     ptr->orthographic = true;
     return ptr;
 }

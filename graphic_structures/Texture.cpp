@@ -17,20 +17,20 @@ Texture::Texture(std::string path)
     stbi_image_free(bytes);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
-Texture& Texture::getTexture(std::string path)
+std::shared_ptr<Texture> Texture::getTexture(std::string path)
 {
     if (map.find(path)!=map.end())
         return map.at(path);
-    map.emplace(path,Texture(path));
+    map.emplace(path,std::shared_ptr<Texture>(new Texture(path)));
     return map.at(path);
 }
-Texture& Texture::bind(int loc, int type = GL_TEXTURE_2D)
+Texture* Texture::bind(int loc, int type = GL_TEXTURE_2D)
 {
     glActiveTexture(GL_TEXTURE0+loc);
     glBindTexture(type,ID);
-    return *this;
+    return this;
 }
-void Texture::activate(Shader* ptr,int index)
+void Texture::activate(std::shared_ptr<Shader> ptr,int index)
 {
     ptr->activate();
     GLuint loc = glGetUniformLocation(ptr->ID,(std::string("tex[")+std::to_string(index)+std::string("]")).c_str());
