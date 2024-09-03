@@ -39,7 +39,7 @@ void Logger::initLogger()
             if (relative.find("log-")!=std::string::npos)
             {
                 int temp = stoi(relative.substr(idx+4,relative.find(".")-(idx+4)));
-                if (temp > highest)
+                    if (temp > highest)
                 highest = temp;
             }
         }

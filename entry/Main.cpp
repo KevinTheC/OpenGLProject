@@ -62,21 +62,6 @@ int main()
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
     #endif
-    
-    Mesh* mesh = MeshParser::parseMesh("./resources/meshes/test.obj");
-    drawables.push_back(mesh);
-    LOG_ALL(Logger::toString(*mesh));
-    //drawables.push_back(poop);
-    // 	Mesh(VBO&&,
-	// EBO&&, 
-	// VAO&&,
-	// std::shared_ptr<Shader>,
-	// uint_fast8_t);
-    // delete(mesh->getVBO());
-    // delete(mesh->getVAO());
-    // delete(mesh->getEBO());
-
-
 
     Camera::instance()->updateProjection(width, height);
     Camera::instance()->setFocus(glm::mat4(1.0f));
