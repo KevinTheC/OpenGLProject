@@ -26,7 +26,6 @@ protected:
 	glm::mat4 model;
 	std::shared_ptr<Shader> shader;
 public:
-	bool orthographic;
 	bool transparent;
 	std::vector<std::shared_ptr<Texture>> textures;
 

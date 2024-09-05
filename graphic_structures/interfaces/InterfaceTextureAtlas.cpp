@@ -1,5 +1,5 @@
 #include "InterfaceTextureAtlas.h"
-Mesh* InterfaceTextureAtlas::buildUI(const std::string& file)
+Mesh2D* InterfaceTextureAtlas::buildUI(const std::string& file)
 {
     std::vector<GLuint> faces = std::vector<GLuint>();
     std::vector<GLfloat> vertexes = std::vector<GLfloat>();
@@ -19,8 +19,7 @@ Mesh* InterfaceTextureAtlas::buildUI(const std::string& file)
     faces.push_back(3);
     faces.push_back(1);
     std::shared_ptr<Shader> shader = Shader::getShader(std::string("./resources/shaders/singleTexture"));
-    Mesh* ptr = new Mesh(std::move(VBO(std::move(vertexes))),std::move(EBO(std::move(faces))),std::move(VAO(shader)),shader,GL_QUADS);
+    Mesh2D* ptr = new Mesh2D(std::move(VBO(std::move(vertexes))),std::move(EBO(std::move(faces))),std::move(VAO(shader)),shader,GL_QUADS);
     ptr->textures.push_back(Texture::getTexture(file));
-    ptr->orthographic = true;
     return ptr;
 }

@@ -6,5 +6,5 @@
 #define screensize 3.0971f
 namespace InterfaceTextureAtlas
 {
-    Mesh* buildUI(const std::string&);
+    Mesh2D* buildUI(const std::string&);
 };

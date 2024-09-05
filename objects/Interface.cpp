@@ -1,5 +1,5 @@
 #include "Interface.h"
-Interface::Interface(std::map<Mesh*,void(*)(Interface*)> regions, std::map<bool(*)(GLFWwindow*),void(*)()> keybinds)
+Interface::Interface(std::map<Mesh2D*,void(*)(Interface*)> regions, std::map<bool(*)(GLFWwindow*),void(*)()> keybinds)
 {
     this->regions = regions;
     this->keybinds = keybinds;
@@ -34,8 +34,7 @@ void Interface::draw() const
     for (auto const& val : drawables)
         val->draw();
 }
-//should add a 2d mesh class to block this from being used on regular meshes
-Area Interface::bounds(GLFWwindow* window, Mesh* mesh)
+Area Interface::bounds(GLFWwindow* window, Mesh2D* mesh)
 {
     int width, height;
     glfwGetWindowSize(window,&width,&height);
@@ -71,7 +70,7 @@ Interface::~Interface()
 {
     while (!drawables.empty())
     {
-        Mesh* m = drawables.back();
+        Mesh2D* m = drawables.back();
         drawables.pop_back();
         delete m;
     }

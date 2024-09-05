@@ -8,7 +8,6 @@ Mesh::Mesh(VBO&& vbparam,
 {
     model = glm::mat4(1.0f);
     shader->activate();
-	orthographic = false;
 	transparent = false;
     vao.linkAttribs(shader,vbo,ebo);
 };
@@ -55,8 +54,7 @@ void Mesh::draw()
         textures.at(i)->bind(i,GL_TEXTURE_2D);
         textures.at(i)->activate(shader,i);
     }
-	if (!orthographic)
-    	Camera::instance()->linkShader(shader.get());
+    Camera::instance()->linkShader(shader.get());
     GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	vao.bind();
