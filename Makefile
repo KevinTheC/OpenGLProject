@@ -1,10 +1,10 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -g
 #change to whatever the includes are
-INCLUDES = -Iinclude -I"$(shell pwd)" -Iinclude/boost_1_82_0
+INCLUDES = -Iinclude -I"$(shell pwd)/src" -Iinclude/boost_1_82_0
 LIBSDIRS = -L./lib
 LIBS = -lopengl32 -luser32 -lgdi32 -lshell32 -lglew32 -lglfw3dll# -lglfw3 
-SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
+SRCS = $(shell find ./src -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
 EXEC = a_output
 DEBUG = a_debug

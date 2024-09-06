@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include "Shader.h"
 #include "stb_image.h"
-#include "include/GL/glew.h"
+#include "OpenGLIncludes.h"
 #include "log/logger.h"
 class Texture{
 private:

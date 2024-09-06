@@ -1,5 +1,4 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -60,4 +59,3 @@ private:
 	double xpos;
 	double ypos;
 };
-#endif
