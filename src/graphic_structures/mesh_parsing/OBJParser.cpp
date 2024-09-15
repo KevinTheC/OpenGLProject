@@ -1,5 +1,5 @@
 #include "OBJParser.h"
-Mesh* OBJParser::parse(std::string path)
+Mesh3D* OBJParser::parse(std::string path)
 {
     std::shared_ptr<Shader> sh = Shader::getShader("./resources/shaders/texture");
     LOG_DEBUG(std::string("Parsing a mesh at: ")+path);
@@ -10,7 +10,7 @@ Mesh* OBJParser::parse(std::string path)
     std::unordered_map<int_fast16_t,glm::vec2> pretexturemap;
 
     OBJParser::getVertexes(std::ifstream(path),prevertex,prevertexmap);
-
+    Hitbox h = generateHitbox(prevertex);
     OBJParser::getUVs(std::ifstream(path),pretexture,pretexturemap);
 
     LOG_DEBUG("Mesh parsed with UV count: "+Logger::toString(pretexture.size())+" and Vertexes (x,y,z all count as 1 each): "+Logger::toString(prevertex.size()));
@@ -78,7 +78,7 @@ Mesh* OBJParser::parse(std::string path)
     }
     VBO vbo = VBO(std::move(floats));
     LOG_ALL("Size of EBO, then VBO:"+std::to_string(ebo.getValues().size())+", "+std::to_string(vbo.getValues().size()));
-    Mesh* ptr = new Mesh(std::move(vbo),std::move(ebo),std::move(VAO(sh)),sh,GL_QUADS);
+    Mesh3D* ptr = new Mesh3D(std::move(vbo),std::move(ebo),std::move(VAO(sh)),sh,GL_QUADS,std::move(h));
 
     //Load references for textures into Mesh
     loadTextures(std::ifstream(changeExtension(path)),ptr);
@@ -166,4 +166,36 @@ std::unordered_map<int_fast16_t,glm::vec2>& premap)
         premap.emplace(i++,vec);
         std::getline(stream,line);
     } while (line[0]!='s');
+}
+
+Hitbox OBJParser::generateHitbox(std::vector<glm::vec3>& prephase)
+{
+    float mm[6] = {maxfloat,maxfloat,maxfloat,minfloat,minfloat,minfloat};
+    for (const glm::vec3& coords : prephase)
+    {
+        //check x's
+        if (coords[0] < mm[0])
+            mm[0] = coords[0];
+        if (coords[0] > mm[3])
+            mm[3] = coords[0];
+        //check y's
+        if (coords[1] < mm[1])
+            mm[1] = coords[1];
+        if (coords[1] > mm[4])
+            mm[4] = coords[1];
+        //check z's
+        if (coords[2] < mm[0])
+            mm[2] = coords[2];
+        if (coords[2] > mm[5])
+            mm[5] = coords[2];
+    }
+    std::vector<glm::vec3> corners = {{mm[0],mm[1],mm[2]},
+    {mm[0],mm[1],mm[5]},
+    {mm[0],mm[4],mm[2]},
+    {mm[0],mm[4],mm[5]},
+    {mm[3],mm[1],mm[2]},
+    {mm[3],mm[1],mm[5]},
+    {mm[3],mm[4],mm[2]},
+    {mm[3],mm[4],mm[5]}};
+    return Hitbox(std::move(corners));
 }

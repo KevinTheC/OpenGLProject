@@ -1,5 +1,5 @@
 #pragma once
-#include "graphic_structures/Mesh.h"
+#include "graphic_structures/Mesh3D.h"
 #include "log/Logger.h"
 #include "graphic_structures/Shader.h"
 #include <string>
@@ -8,5 +8,5 @@
 class MeshParser
 {
 public:
-    static Mesh* parseMesh(std::string path);
+    static Mesh3D* parseMesh(std::string path);
 };

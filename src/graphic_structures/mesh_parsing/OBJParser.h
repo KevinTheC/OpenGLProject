@@ -10,14 +10,15 @@
 #include "graphic_structures/EBO.h"
 #include "graphic_structures/VBO.h"
 #include "graphic_structures/VAO.h"
-#include "graphic_structures/Mesh.h"
+#include "graphic_structures/Mesh3D.h"
 #include "graphic_structures/Texture.h"
 class OBJParser{
 public:
-    static Mesh* parse(std::string path);
+    static Mesh3D* parse(std::string path);
 private:
     static void getVertexes(std::ifstream stream, std::vector<glm::vec3>& prephase, std::unordered_map<int_fast16_t,glm::vec3>& premap);
     static void getUVs(std::ifstream stream, std::vector<glm::vec2>& prephase, std::unordered_map<int_fast16_t,glm::vec2>& premap);
     static std::string changeExtension(std::string);
     static void loadTextures(std::ifstream stream, Mesh* mesh);
+    static Hitbox generateHitbox(std::vector<glm::vec3>& prephase);
 };
